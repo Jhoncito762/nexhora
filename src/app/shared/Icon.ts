@@ -1,7 +1,7 @@
-import { Eye, Github, Globe, Leaf as LeafIcon, Lightbulb, Linkedin, Lock, Rocket, Sparkles, Target } from 'lucide-react'
-import React from 'react'
+import { Eye, Globe, Leaf as LeafIcon, Lightbulb, Lock, Rocket, Sparkles, Target } from 'lucide-react'
 import { IoLogoWhatsapp } from 'react-icons/io'
 import { LuLeaf, LuUsers } from 'react-icons/lu'
+import { FaFacebookF, FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa6";
 
 const Icon = {
     IoLogoWhatsapp,
@@ -11,13 +11,14 @@ const Icon = {
     LuLeaf,
     Eye,
     Rocket,
-    Linkedin,
-    Github,
+    FaFacebookF,
     Lock,
     Lightbulb,
     Globe,
-    Leaf: LeafIcon
-
+    FaLinkedin,
+    Leaf: LeafIcon,
+    FaInstagram,
+    FaGithub
 }
 
 export default Icon

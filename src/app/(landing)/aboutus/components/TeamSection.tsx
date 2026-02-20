@@ -3,7 +3,7 @@ import React from "react";
 
 import Icon from "@/src/app/shared/Icon";
 
-const { Linkedin, Github } = Icon;
+const { FaGithub, FaLinkedin } = Icon;
 
 interface TeamMember {
     name: string;
@@ -19,14 +19,12 @@ const team: TeamMember[] = [
         role: "CEO & Fundador",
         image: "/fotoJhon.webp",
         linkedin: "#",
-        github: "#",
     },
     {
         name: "Jorge Martinez",
         role: "CTO & Arquitecta de Software",
         image: "/fotoJhon.webp",
         linkedin: "#",
-        github: "#",
     },
     {
         name: "Andres Trivino",
@@ -40,6 +38,7 @@ const team: TeamMember[] = [
         role: "Partner & Developer",
         image: "/fotoJhon.webp",
         linkedin: "#",
+        github: "#",
     },
     {
         name: "Manuel Navarro",
@@ -130,7 +129,7 @@ export default function TeamSection() {
                                                 color: color,
                                             }}
                                         >
-                                            <Linkedin className="h-4 w-4" />
+                                            <FaLinkedin className="h-4 w-4" />
                                         </a>
                                     )}
                                     {member.github && (
@@ -143,7 +142,7 @@ export default function TeamSection() {
                                                 color: color,
                                             }}
                                         >
-                                            <Github className="h-4 w-4" />
+                                            <FaGithub className="h-4 w-4" />
                                         </a>
                                     )}
                                 </div>

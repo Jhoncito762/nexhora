@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Icon from "@/src/app/shared/Icon";
 
-const { Linkedin, Github, IoLogoWhatsapp, Globe } = Icon;
+const { FaFacebookF, FaLinkedin, IoLogoWhatsapp, FaInstagram } = Icon;
 
 export default function Footer() {
     return (
@@ -36,14 +36,14 @@ export default function Footer() {
                                     aria-label="LinkedIn"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
-                                    <Linkedin className="h-5 w-5" />
+                                    <FaFacebookF className="h-5 w-5" />
                                 </a>
                                 <a
                                     href="#"
                                     aria-label="GitHub"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
-                                    <Github className="h-5 w-5" />
+                                    <FaLinkedin className="h-5 w-5" />
                                 </a>
                                 <a
                                     href="#"
@@ -57,7 +57,7 @@ export default function Footer() {
                                     aria-label="Sitio web"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
-                                    <Globe className="h-5 w-5" />
+                                    <FaInstagram className="h-5 w-5" />
                                 </a>
                             </div>
                         </div>
@@ -101,7 +101,7 @@ export default function Footer() {
 
                                     <p className="mt-6 text-sm font-semibold tracking-wide">Síguenos</p>
                                     <p className="mt-2 text-xs text-white/60">
-                                        (Puedes reemplazar los enlaces cuando tengas las URLs oficiales.)
+                                        Links
                                     </p>
                                 </div>
                             </div>
