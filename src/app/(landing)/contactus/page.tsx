@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Icon from "@/src/app/shared/Icon";
 
-const { Linkedin, Github, IoLogoWhatsapp } = Icon;
+const { FaLinkedin, FaGithub, IoLogoWhatsapp } = Icon;
 
 export default function Page() {
     return (
@@ -60,14 +60,14 @@ export default function Page() {
                                                 aria-label="LinkedIn"
                                                 className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900 transition hover:border-gray-400"
                                             >
-                                                <Linkedin className="h-5 w-5" />
+                                                <FaLinkedin className="h-5 w-5" />
                                             </a>
                                             <a
                                                 href="#"
                                                 aria-label="GitHub"
                                                 className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900 transition hover:border-gray-400"
                                             >
-                                                <Github className="h-5 w-5" />
+                                                <FaGithub className="h-5 w-5" />
                                             </a>
                                             <a
                                                 href="#"
