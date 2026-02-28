@@ -3,56 +3,53 @@ import React from "react";
 
 import Icon from "@/src/app/shared/Icon";
 
-const { FaGithub, FaLinkedin } = Icon;
+const { FaGithub, FaLinkedin, RiGlobalFill } = Icon;
 
 interface TeamMember {
     name: string;
     role: string;
     image: string;
     linkedin?: string;
-    github?: string;
+    webpage?: string;
 }
 
 const team: TeamMember[] = [
     {
-        name: "Irlesa",
-        role: "CEO & Fundador",
-        image: "/fotoJhon.webp",
-        linkedin: "#",
+        name: "Irlesa Sánchez",
+        role: "Director Ejecutivo",
+        image: "/Team/fotoIrlesa.webp",
+        webpage: "https://scienti.minciencias.gov.co/cvlac/visualizador/generarCurriculoCv.do?cod_rh=0000567809",
     },
     {
         name: "Jorge Martinez",
         role: "CTO & Arquitecta de Software",
-        image: "/fotoJhon.webp",
+        image: "/Team/fotoJhon.webp",
         linkedin: "#",
     },
     {
-        name: "Andres Trivino",
-        role: "Partner & Developer",
-        image: "/fotoJhon.webp",
-        linkedin: "#",
-        github: "#",
+        name: "Andrés Triviño",
+        role: "Socio y Desarrollador",
+        image: "/Team/fotoTrivi.webp",
+        linkedin: "https://www.linkedin.com/in/gabriel-andres-trivinovera-3b23b4369/",
     },
     {
         name: "Cristian Alvira",
-        role: "Partner & Developer",
-        image: "/fotoJhon.webp",
-        linkedin: "#",
-        github: "#",
+        role: "Socio y Desarrollador",
+        image: "/Team/fotoCristian.webp",
+        linkedin: "https://www.linkedin.com/in/cristian-alvira-89180b15b",
     },
     {
         name: "Manuel Navarro",
-        role: "Partner & Developer",
-        image: "/fotoJhon.webp",
-        linkedin: "#",
-        github: "#",
+        role: "Socio y Desarrollador",
+        image: "/Team/fotoManuel.webp",
+        linkedin: "https://www.linkedin.com/in/manuel-navarro-m/",
+        webpage: "https://github.com/Minmgf",
     },
     {
         name: "Jhon Pulido",
-        role: "Partner & Developer",
-        image: "/fotoJhon.webp",
-        linkedin: "#",
-        github: "#",
+        role: "Socio y Desarrollador",
+        image: "/Team/fotoJhon.webp",
+        linkedin: "https://www.linkedin.com/in/jhon-henry-pulido-vaca-23b232339",
     },
 
 ];
@@ -132,9 +129,9 @@ export default function TeamSection() {
                                             <FaLinkedin className="h-4 w-4" />
                                         </a>
                                     )}
-                                    {member.github && (
+                                    {member.webpage && (
                                         <a
-                                            href={member.github}
+                                            href={member.webpage}
                                             aria-label={`GitHub de ${member.name}`}
                                             className="flex h-9 w-9 items-center justify-center rounded-full transition-colors"
                                             style={{
@@ -142,7 +139,7 @@ export default function TeamSection() {
                                                 color: color,
                                             }}
                                         >
-                                            <FaGithub className="h-4 w-4" />
+                                            <RiGlobalFill className="h-4 w-4" />
                                         </a>
                                     )}
                                 </div>

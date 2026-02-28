@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import Icon from "@/src/app/shared/Icon";
-
-const { LuUsers, Sparkles, Target, Globe, Lightbulb, Lock, Leaf } = Icon;
+import React from "react";
+import Icon from "../../shared/Icon";
+import ServiceCard from "./components/ServiceCard";
+import Link from "next/link";
 
 type ServiceCategory = {
     id: number;
@@ -18,10 +18,10 @@ const content = {
         mission:
             "Impulsar la transformación digital responsable integrando innovación, sostenibilidad, ética e impacto social.",
         differentialValue: [
-            "Enfoque humanista y sostenible",
-            "Integración de inteligencia artificial responsable",
-            "Alineación con los Objetivos de Desarrollo Sostenible (ODS)",
-            "Resultados medibles y desarrollo competitivo",
+            { label: "Enfoque humanista y sostenible", icon: Icon.LuUsers },
+            { label: "Inteligencia artificial responsable", icon: Icon.Sparkles },
+            { label: "Alineación con los ODS", icon: Icon.Target },
+            { label: "Resultados medibles", icon: Icon.Globe },
         ],
     },
     services: [
@@ -125,138 +125,132 @@ const content = {
     ] satisfies ServiceCategory[],
 };
 
-function ServiceCard({
-    category,
-    icon,
-}: {
-    category: ServiceCategory;
-    icon: React.ReactNode;
-}) {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-        <article className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white p-7 shadow-sm transition-shadow duration-300 hover:shadow-lg flex flex-col">
-            <div className="absolute left-0 top-0 h-1 w-full bg-linear-to-r from-[#f3f6fb] via-[#c7d6f0] to-[#4f79c7]" />
-
-            <div className="mt-2 flex items-center justify-start">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-[#f3f6fb] via-[#c7d6f0]/70 to-[#4f79c7]/25">
-                    {icon}
-                </div>
-            </div>
-
-            <h3 className="mt-6 text-xl font-bold text-gray-900">
-                {category.title}
-            </h3>
-
-            <p className="mt-3 text-sm leading-6 text-gray-600">
-                {category.description}
-            </p>
-
-            {category.differential && (
-                <div className="mt-5">
-                    <span className="inline-flex items-center text-xs font-semibold text-[rgb(7,100,144)] bg-[rgba(7,100,144,0.08)] border border-[rgba(7,100,144,0.14)] rounded-lg px-4 py-2">
-                        {category.differential}
-                    </span>
-                </div>
-            )}
-
-            <div className="mt-auto pt-6">
-                <button
-                    type="button"
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="cursor-pointer select-none text-sm font-semibold text-[rgb(34,64,171)] inline-flex items-center gap-2"
-                >
-                    <span>{isOpen ? "Ocultar" : "Ver servicios"}</span>
-                    <span
-                        aria-hidden="true"
-                        className={`transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
-                    >
-                        ›
-                    </span>
-                </button>
-
-                <div
-                    className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
-                        }`}
-                >
-                    <ul className="space-y-2">
-                        {category.services.map((item) => (
-                            <li
-                                key={item}
-                                className="flex items-start gap-3 text-sm text-gray-700"
-                            >
-                                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-linear-to-r from-[rgb(7,100,144)] to-[rgb(34,64,171)]" />
-                                <span className="leading-6">{item}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </div>
-        </article>
-    );
-}
-
 export default function Page() {
     return (
-        <main className="w-full min-h-screen bg-background">
-            {/* Header */}
-            <section className="w-full pt-20 pb-12">
-                <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                    <div className="flex flex-col items-center text-center gap-4">
-                        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900">
-                            Soluciones que transforman
+        <main className="relative min-h-screen w-full bg-[#f8fafd]">
+            {/* Subtle background accents */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-32 right-0 h-125 w-125 rounded-full bg-[#4f79c7]/4 blur-[120px]" />
+                <div className="absolute top-[40%] -left-32 h-100 w-100 rounded-full bg-[#076490]/3 blur-[100px]" />
+            </div>
+
+            {/* ── Hero ── */}
+            <section className="relative pt-20 pb-14 sm:pt-28 sm:pb-20">
+                <div className="mx-auto max-w-5xl px-5 sm:px-8">
+                    <div className="flex flex-col items-center text-center">
+                        {/* Badge */}
+                        <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c7d6f0]/60 bg-white px-4 py-1.5 text-xs font-medium text-[#076490] shadow-[0_1px_3px_rgba(7,100,144,0.06)]">
+                            <span className="relative flex h-1.5 w-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#076490]/50" />
+                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#076490]" />
+                            </span>
+                            Portafolio de Servicios
+                        </span>
+
+                        {/* Heading */}
+                        <h1 className="text-4xl font-bold tracking-tight text-[#1a2847] sm:text-5xl lg:text-6xl text-balance">
+                            Soluciones que{" "}
+                            <span className="bg-linear-to-r from-[#076490] via-[#2240ab] to-[#4f79c7] bg-clip-text text-transparent">
+                                transforman
+                            </span>
                         </h1>
 
-                        <p className="text-base sm:text-lg text-gray-600 max-w-4xl">
+                        {/* Mission */}
+                        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#64748b] sm:text-lg text-pretty">
                             {content.portfolio.mission}
                         </p>
 
-                        <div className="mt-4 flex flex-wrap gap-4 justify-center">
-                            <span className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-5 py-2 text-sm font-semibold text-gray-800">
-                                <LuUsers size={18} className="text-[rgb(7,100,144)]" />
-                                {content.portfolio.differentialValue[0]}
-                            </span>
-                            <span className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-5 py-2 text-sm font-semibold text-gray-800">
-                                <Sparkles size={18} className="text-[rgb(7,100,144)]" />
-                                {content.portfolio.differentialValue[1]}
-                            </span>
-                            <span className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-5 py-2 text-sm font-semibold text-gray-800">
-                                <Target size={18} className="text-[rgb(7,100,144)]" />
-                                {content.portfolio.differentialValue[2]}
-                            </span>
-                            <span className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-5 py-2 text-sm font-semibold text-gray-800">
-                                <Globe size={18} className="text-[rgb(7,100,144)]" />
-                                {content.portfolio.differentialValue[3]}
-                            </span>
+                        {/* Differential values */}
+                        <div className="mt-10 grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-2">
+                            {content.portfolio.differentialValue.map((item) => {
+                                const DIcon = item.icon;
+                                return (
+                                    <div
+                                        key={item.label}
+                                        className="flex items-center gap-3 rounded-xl border border-[#c7d6f0]/40 bg-white px-4 py-3 transition-all duration-200 hover:border-[#4f79c7]/30 hover:shadow-sm"
+                                    >
+                                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#f3f6fb]">
+                                            <DIcon size={15} className="text-[#076490]" />
+                                        </div>
+                                        <span className="text-[13px] font-medium text-[#2d3748]">
+                                            {item.label}
+                                        </span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Cards */}
-            <section className="w-full pb-16">
-                <div className="mx-auto max-w-6xl px-4 sm:px-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {content.services.map((category) => {
-                            const iconById: Record<number, React.ReactNode> = {
-                                1: <Lightbulb size={22} className="text-[rgb(7,100,144)]" />,
-                                2: <Sparkles size={22} className="text-[rgb(7,100,144)]" />,
-                                3: <Target size={22} className="text-[rgb(7,100,144)]" />,
-                                4: <Leaf size={22} className="text-[rgb(7,100,144)]" />,
-                                5: <Globe size={22} className="text-[rgb(7,100,144)]" />,
-                                6: <LuUsers size={22} className="text-[rgb(7,100,144)]" />,
-                                7: <Lightbulb size={22} className="text-[rgb(7,100,144)]" />,
-                                8: <Lock size={22} className="text-[rgb(7,100,144)]" />,
-                            };
+            {/* ── Section heading ── */}
+            <section className="relative">
+                <div className="mx-auto max-w-6xl px-5 sm:px-8">
+                    <div className="flex items-end justify-between pb-6">
+                        <div>
+                            <h2 className="text-2xl font-bold text-[#1a2847] sm:text-3xl">
+                                Nuestros Servicios
+                            </h2>
+                            <p className="mt-1.5 text-sm text-[#64748b]">
+                                8 areas de especializacion para tu transformacion digital
+                            </p>
+                        </div>
+                    </div>
+                    <div className="h-px w-full bg-linear-to-r from-[#c7d6f0]/60 via-[#4f79c7]/20 to-transparent" />
+                </div>
+            </section>
 
-                            return (
-                                <ServiceCard
-                                    key={category.id}
-                                    category={category}
-                                    icon={iconById[category.id]}
-                                />
-                            );
-                        })}
+            {/* ── Cards grid ── */}
+            <section className="relative pt-8 pb-20">
+                <div className="mx-auto max-w-6xl px-5 sm:px-8">
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                        {content.services.map((category) => (
+                            <ServiceCard key={category.id} category={category} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* ── CTA Banner ── */}
+            <section className="relative pb-16">
+                <div className="mx-auto max-w-6xl px-5 sm:px-8">
+                    <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#1a2847] via-[#2240ab] to-[#076490] px-8 py-10 sm:px-12 sm:py-14">
+                        {/* Dot pattern */}
+                        <div
+                            aria-hidden="true"
+                            className="absolute inset-0 opacity-[0.07]"
+                            style={{
+                                backgroundImage:
+                                    "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)",
+                                backgroundSize: "20px 20px",
+                            }}
+                        />
+                        {/* Glow */}
+                        <div
+                            aria-hidden="true"
+                            className="absolute -top-20 right-0 h-60 w-60 rounded-full bg-[#4f79c7]/20 blur-[80px]"
+                        />
+
+                        <div className="relative flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+                            <div className="max-w-lg">
+                                <h3 className="text-xl font-bold text-white sm:text-2xl text-balance">
+                                    {"¿Listo para transformar tu organización?"}
+                                </h3>
+                                <p className="mt-2.5 text-sm leading-relaxed text-[#c7d6f0]/80">
+                                    Conectemos para diseñar juntos una estrategia de innovación
+                                    alineada a tus objetivos y los ODS.
+                                </p>
+                            </div>
+                            <Link href={"/contactus"}>
+                                <button
+                                    type="button"
+                                    className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-semibold text-[#2240ab] shadow-lg transition-all duration-200 hover:cursor-pointer hover:shadow-xl active:scale-[0.98]"
+                                >
+                                    Contáctanos
+                                    <Icon.ArrowRight size={15} />
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

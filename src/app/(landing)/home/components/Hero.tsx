@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link';
 
 const information = {
     description: 'Acompañamos empresas, instituciones y gobiernos en su transformación digital sostenible. Consultoría, IA responsable y desarrollo tecnológico alineado con los ODS.'
@@ -31,13 +32,18 @@ const Hero = () => {
                     </p>
 
                     <div className="flex items-center gap-5">
-                        <button className="bg-black px-4 py-2 text-white rounded-xl hover:bg-gray-700 transition">
-                            Conocer más
-                        </button>
+                        <Link href={"/aboutus"}>
+                            <button className="bg-black px-4 py-2 text-white rounded-xl hover:bg-gray-700 transition-all duration-300 hover:cursor-pointer">
+                                Conocer más
+                            </button>
+                        </Link>
 
-                        <button className="text-black hover:underline">
-                            Nuestros servicios
-                        </button>
+                        <Link href={"/services"}>
+                            <button className="text-black hover:underline hover:cursor-pointer">
+                                Nuestros servicios
+                            </button>
+
+                        </Link>
                     </div>
 
                 </div>

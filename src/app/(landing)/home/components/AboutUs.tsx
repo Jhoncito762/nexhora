@@ -22,7 +22,7 @@ const AboutUsInformation: InformationCards[] = [
     {
         id: 2,
         title: "Aliados:",
-        subtitle: "AmITIC, USCO, SENA",
+        subtitle: "Red AmITIC,  Fundación Elojim Jadach, Agroindustrial Reina",
         icon: <LuUsers size={24} />,
         color: "rgb(16,132,170)",
     },

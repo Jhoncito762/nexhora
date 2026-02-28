@@ -4,9 +4,13 @@ const HeroAbousUs = () => {
     return (
         <div className='w-full bg-linear-to-b from-[#f3f6fb] via-[#c7d6f0]/65 to-[#4f79c7]'>
             <div className="flex flex-col items-center gap-6 py-20 px-4 sm:px-8 md:px-16">
-                <p className="w-fit bg-white border border-gray-300 rounded-xl px-5 py-2 text-sm font-medium">
+                <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#c7d6f0]/60 bg-white px-4 py-1.5 text-xs font-medium text-[#076490] shadow-[0_1px_3px_rgba(7,100,144,0.06)]">
+                    <span className="relative flex h-1.5 w-1.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#076490]/50" />
+                        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#076490]" />
+                    </span>
                     Sobre Nosotros
-                </p>
+                </span>
                 <h1 className='flex flex-col md:flex-row gap-3 text-6xl sm:text-4xl md:text-7xl font-bold text-center md:text-left'>
                     Conoce a <span className='bg-linear-to-r from-[rgb(7,100,144)] to-[rgb(34,64,171)] bg-clip-text text-transparent'>Nexhora</span>
                 </h1>

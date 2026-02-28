@@ -77,7 +77,7 @@ const NavBar = () => {
                             <Link href="/services" className="block py-3 px-4" onClick={closeMenu}>
                                 Servicios
                             </Link>
-                            <Link href="/products" className="text-black hover:cursor-pointer">
+                            <Link href="/products" className="block py-3 px-4">
                                 Productos
                             </Link>
                             <Link href="/aboutus" className="block py-3 px-4">
