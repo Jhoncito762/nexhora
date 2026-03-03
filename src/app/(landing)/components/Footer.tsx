@@ -59,13 +59,6 @@ export default function Footer() {
                                 >
                                     <RiInstagramFill className="h-5 w-5" />
                                 </a>
-                                <a
-                                    href="#"
-                                    aria-label="Sitio web"
-                                    className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
-                                >
-                                    <FaTiktok className="h-5 w-5" />
-                                </a>
                             </div>
                         </div>
 

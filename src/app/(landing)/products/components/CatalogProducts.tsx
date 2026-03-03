@@ -34,9 +34,9 @@ const nexhoraColors = [
 
 const products: Product[] = [
     {
-        id: "nexhora_reservas",
-        name: "NexHora Reservas",
-        tagline: "Gestión integral de reservas multisede",
+        id: "nexhora_canchitas",
+        name: "Canchitas",
+        tagline: "Gestión integral de reservas de escenarios deportivos multisede",
         description:
             "Plataforma B2B para administrar negocios con múltiples sitios (canchas, salones), gestionar sus horarios, configuración de reservas, inventario y permisos granulares de usuarios.",
         image: [
@@ -87,59 +87,112 @@ const products: Product[] = [
         ],
         link: "https://canchitas.nexhora.co/",
     },
-    {
-        id: "parkia",
-        name: "ParkIA",
-        tagline: "Sistema de gestión de parqueaderos SaaS",
-        description:
-            "Sistema ERP modular en la nube que integra finanzas, inventario, talento humano y operaciones en una sola plataforma, con analítica predictiva y automatización.",
-        image: [
-            "/Products/canchas/canchas.webp",
-            "/Products/canchas/dashboard.webp",
-            "/Products/canchas/dashboard2.webp",
-        ],
-        icon: Layers,
-        color: nexhoraColors[2],
-        "modules": [
-            {
-                "name": "Gestión Multisitio",
-                "description": "Administración de múltiples negocios y sitios de forma independiente pero centralizada."
-            },
-            {
-                "name": "Generación Dinámica de Slots",
-                "description": "Generación automática de horarios disponibles según reglas de negocio evitando solapamientos."
-            },
-            {
-                "name": "Precios Dinámicos (Hora Pico)",
-                "description": "Precios diferenciados para horarios regulares y de alta demanda."
-            },
-            {
-                "name": "Control de Acceso Basado en Roles (RBAC)",
-                "description": "Sistema de permisos granulares con categorías extensibles desde la base de datos."
-            },
-            {
-                "name": "Calendario Interactivo",
-                "description": "Visualización y gestión centralizada de reservas en tiempo real."
-            },
-            {
-                "name": "Panel de Estadísticas y Analítica",
-                "description": "Dashboard con métricas clave: reservas, ocupación, cancelaciones y clientes frecuentes."
-            },
-            {
-                "name": "Módulo de Inventario e Invoices",
-                "description": "Control de recursos adicionales y sistema de facturación."
-            }
-        ],
-        features: [
-            "Control de entrada/salida",
-            "Tarifas dinámicas",
-            "Facturación electrónica",
-            "Analítica de ocupación",
-            "Cierres de caja",
-            "Gestión de mensualidades",
-        ],
-        link: "",
-    },
+    // {
+    //     id: "parkia",
+    //     name: "ParkIA",
+    //     tagline: "Sistema de gestión de parqueaderos SaaS",
+    //     description:
+    //         "Sistema ERP modular en la nube que integra finanzas, inventario, talento humano y operaciones en una sola plataforma, con analítica predictiva y automatización.",
+    //     image: [
+    //         "/Products/canchas/canchas.webp",
+    //         "/Products/canchas/dashboard.webp",
+    //         "/Products/canchas/dashboard2.webp",
+    //     ],
+    //     icon: Layers,
+    //     color: nexhoraColors[2],
+    //     "modules": [
+    //         {
+    //             "name": "Gestión Multisitio",
+    //             "description": "Administración de múltiples negocios y sitios de forma independiente pero centralizada."
+    //         },
+    //         {
+    //             "name": "Generación Dinámica de Slots",
+    //             "description": "Generación automática de horarios disponibles según reglas de negocio evitando solapamientos."
+    //         },
+    //         {
+    //             "name": "Precios Dinámicos (Hora Pico)",
+    //             "description": "Precios diferenciados para horarios regulares y de alta demanda."
+    //         },
+    //         {
+    //             "name": "Control de Acceso Basado en Roles (RBAC)",
+    //             "description": "Sistema de permisos granulares con categorías extensibles desde la base de datos."
+    //         },
+    //         {
+    //             "name": "Calendario Interactivo",
+    //             "description": "Visualización y gestión centralizada de reservas en tiempo real."
+    //         },
+    //         {
+    //             "name": "Panel de Estadísticas y Analítica",
+    //             "description": "Dashboard con métricas clave: reservas, ocupación, cancelaciones y clientes frecuentes."
+    //         },
+    //         {
+    //             "name": "Módulo de Inventario e Invoices",
+    //             "description": "Control de recursos adicionales y sistema de facturación."
+    //         }
+    //     ],
+    //     features: [
+    //         "Control de entrada/salida",
+    //         "Tarifas dinámicas",
+    //         "Facturación electrónica",
+    //         "Analítica de ocupación",
+    //         "Cierres de caja",
+    //         "Gestión de mensualidades",
+    //     ],
+    //     link: "",
+    // },
+    // {
+    //     id: "agroindustria_reina",
+    //     name: "E-commerce Agroindustrial Reina SAS",
+    //     tagline: "Sistema de gestión de parqueaderos SaaS",
+    //     description:
+    //         "Sistema ERP modular en la nube que integra finanzas, inventario, talento humano y operaciones en una sola plataforma, con analítica predictiva y automatización.",
+    //     image: [
+    //         "/Products/canchas/canchas.webp",
+    //         "/Products/canchas/dashboard.webp",
+    //         "/Products/canchas/dashboard2.webp",
+    //     ],
+    //     icon: Layers,
+    //     color: nexhoraColors[2],
+    //     "modules": [
+    //         {
+    //             "name": "Gestión Multisitio",
+    //             "description": "Administración de múltiples negocios y sitios de forma independiente pero centralizada."
+    //         },
+    //         {
+    //             "name": "Generación Dinámica de Slots",
+    //             "description": "Generación automática de horarios disponibles según reglas de negocio evitando solapamientos."
+    //         },
+    //         {
+    //             "name": "Precios Dinámicos (Hora Pico)",
+    //             "description": "Precios diferenciados para horarios regulares y de alta demanda."
+    //         },
+    //         {
+    //             "name": "Control de Acceso Basado en Roles (RBAC)",
+    //             "description": "Sistema de permisos granulares con categorías extensibles desde la base de datos."
+    //         },
+    //         {
+    //             "name": "Calendario Interactivo",
+    //             "description": "Visualización y gestión centralizada de reservas en tiempo real."
+    //         },
+    //         {
+    //             "name": "Panel de Estadísticas y Analítica",
+    //             "description": "Dashboard con métricas clave: reservas, ocupación, cancelaciones y clientes frecuentes."
+    //         },
+    //         {
+    //             "name": "Módulo de Inventario e Invoices",
+    //             "description": "Control de recursos adicionales y sistema de facturación."
+    //         }
+    //     ],
+    //     features: [
+    //         "Control de entrada/salida",
+    //         "Tarifas dinámicas",
+    //         "Facturación electrónica",
+    //         "Analítica de ocupación",
+    //         "Cierres de caja",
+    //         "Gestión de mensualidades",
+    //     ],
+    //     link: "",
+    // },
 
 ];
 

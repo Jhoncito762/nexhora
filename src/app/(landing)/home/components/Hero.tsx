@@ -13,7 +13,7 @@ const Hero = () => {
         <div className="w-full bg-linear-to-b from-[#f3f6fb] via-[#c7d6f0]/65 to-[#4f79c7]">
             <div className="flex flex-col md:flex-row gap-10 mx-10 my-20">
 
-                <div className="flex flex-col gap-6 w-full md:w-[43%] md: mt-10">
+                <div className="flex flex-col gap-6 w-full md:w-[43%] md:mt-10">
 
                     <p className=" w-fit bg-white border border-gray-300 rounded-lg px-4 py-1 text-sm font-medium">
                         Bienvenido a Nexhora!

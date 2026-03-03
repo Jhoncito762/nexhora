@@ -21,12 +21,6 @@ const team: TeamMember[] = [
         webpage: "https://scienti.minciencias.gov.co/cvlac/visualizador/generarCurriculoCv.do?cod_rh=0000567809",
     },
     {
-        name: "Jorge Martinez",
-        role: "CTO & Arquitecta de Software",
-        image: "/Team/fotoJhon.webp",
-        linkedin: "#",
-    },
-    {
         name: "Andrés Triviño",
         role: "Socio y Desarrollador",
         image: "/Team/fotoTrivi.webp",
@@ -35,7 +29,7 @@ const team: TeamMember[] = [
     {
         name: "Cristian Alvira",
         role: "Socio y Desarrollador",
-        image: "/Team/fotoCristian.webp",
+        image: "/Team/fotoCristian2.webp",
         linkedin: "https://www.linkedin.com/in/cristian-alvira-89180b15b",
     },
     {
