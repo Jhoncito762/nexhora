@@ -187,13 +187,27 @@ export default function Page() {
             <section className="relative">
                 <div className="mx-auto max-w-6xl px-5 sm:px-8">
                     <div className="flex items-end justify-between pb-6">
-                        <div>
-                            <h2 className="text-2xl font-bold text-[#1a2847] sm:text-3xl">
-                                Nuestros Servicios
-                            </h2>
-                            <p className="mt-1.5 text-sm text-[#64748b]">
-                                8 areas de especializacion para tu transformacion digital
-                            </p>
+                        <div className="flex gap-7 items-center">
+
+                            <div>
+                                <h2 className="text-2xl font-bold text-[#1a2847] sm:text-3xl">
+                                    Nuestros Servicios
+                                </h2>
+                                <p className="mt-1.5 text-sm text-[#64748b]">
+                                    8 areas de especializacion para tu transformacion digital
+                                </p>
+                            </div>
+                            <div className="bg-[#c7d6f0] h-15 w-px" />
+
+                            <a
+                                href="/Portafolio_Servicios_Nexhora.pdf"
+                                download
+                                className="inline-flex items-center gap-2 bg-[#2240ab] text-white px-5 py-3 rounded-xl shadow-md hover:shadow-[#2240ab] transition duration-300"
+                            >
+                                <Icon.AiOutlineFilePdf size={20} />
+                                Descárgalo en PDF aquí
+                            </a>
+
                         </div>
                     </div>
                     <div className="h-px w-full bg-linear-to-r from-[#c7d6f0]/60 via-[#4f79c7]/20 to-transparent" />

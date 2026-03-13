@@ -26,21 +26,21 @@ export default function Footer() {
                             </Link>
 
                             <p className="mt-5 text-sm text-white/80 max-w-lg">
-                                Tecnología con propósito: consultoría, IA responsable y desarrollo
+                                Tecnología con propósito: Consultoría, IA responsable y desarrollo
                                 tecnológico para organizaciones que buscan impacto.
                             </p>
 
                             <div className="mt-6 flex items-center gap-3">
                                 <a
-                                    href="#"
-                                    aria-label="LinkedIn"
+                                    href="https://web.facebook.com/profile.php?id=61583443770511"
+                                    aria-label="Facebook"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
                                     <FaFacebookF className="h-5 w-5" />
                                 </a>
                                 <a
-                                    href="#"
-                                    aria-label="GitHub"
+                                    href="https://www.linkedin.com/company/nexhora/"
+                                    aria-label="Linkedin"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
                                     <FaLinkedin className="h-5 w-5" />
@@ -53,7 +53,7 @@ export default function Footer() {
                                     <IoLogoWhatsapp className="h-5 w-5" />
                                 </a>
                                 <a
-                                    href="#"
+                                    href="https://www.instagram.com/nexhora_sass/"
                                     aria-label="Sitio web"
                                     className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white/90 transition hover:bg-white/10 hover:text-white"
                                 >
@@ -105,10 +105,25 @@ export default function Footer() {
                                         Transformación digital sostenible.
                                     </p>
 
-                                    <p className="mt-6 text-sm font-semibold tracking-wide">Síguenos</p>
-                                    <p className="mt-2 text-xs text-white/60">
-                                        Links
-                                    </p>
+                                    <p className="mt-6 text-sm font-semibold tracking-wide mb-2">Síguenos</p>
+                                    <div className="flex flex-col">
+
+                                        <Link href={'https://www.linkedin.com/company/nexhora/'}>
+                                            <p className="mt-2 text-xs text-white/80 hover:underline">
+                                                https://www.linkedin.com/company/nexhora/
+                                            </p>
+                                        </Link>
+                                        <Link href={'https://web.facebook.com/profile.php?id=61583443770511'}>
+                                            <p className="mt-2 text-xs text-white/80 hover:underline">
+                                                https://www.facebook.com/nexhora/
+                                            </p>
+                                        </Link>
+                                        <Link href={'https://web.facebook.com/profile.php?id=61583443770511'}>
+                                            <p className="mt-2 text-xs text-white/80 hover:underline">
+                                                https://www.instagram.com/nexhora_sass/
+                                            </p>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>

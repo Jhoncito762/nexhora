@@ -5,7 +5,7 @@ import Image from "next/image";
 import Icon from "@/src/app/shared/Icon";
 import Modal from "@/src/app/shared/Modal";
 
-const { FaLinkedin, FaGithub, IoLogoWhatsapp } = Icon;
+const { FaLinkedin, RiInstagramFill, IoLogoWhatsapp } = Icon;
 
 type ApiResponse = {
     ok: boolean;
@@ -205,18 +205,18 @@ export default function Page() {
                                         </p>
                                         <div className="mt-3 flex items-center gap-3">
                                             <a
-                                                href="#"
+                                                href="https://www.linkedin.com/company/nexhora/"
                                                 aria-label="LinkedIn"
                                                 className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900 transition hover:border-gray-400"
                                             >
                                                 <FaLinkedin className="h-5 w-5" />
                                             </a>
                                             <a
-                                                href="#"
-                                                aria-label="GitHub"
+                                                href="https://www.instagram.com/nexhora_sass/"
+                                                aria-label="Innstagram"
                                                 className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-900 transition hover:border-gray-400"
                                             >
-                                                <FaGithub className="h-5 w-5" />
+                                                <RiInstagramFill className="h-5 w-5" />
                                             </a>
                                             <a
                                                 href="#"

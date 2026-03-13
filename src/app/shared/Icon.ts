@@ -24,6 +24,7 @@ import { RiGlobalFill, RiInstagramFill } from "react-icons/ri";
 import { IoLogoWhatsapp } from 'react-icons/io'
 import { LuLeaf, LuUsers } from 'react-icons/lu'
 import { FaFacebookF, FaLinkedin, FaInstagram, FaGithub, FaTiktok } from "react-icons/fa6";
+import { AiOutlineFilePdf } from 'react-icons/ai';
 
 const Icon = {
     IoLogoWhatsapp,
@@ -55,7 +56,8 @@ const Icon = {
     Network,
     FaTiktok,
     RiInstagramFill,
-    ExternalLink
+    ExternalLink,
+    AiOutlineFilePdf
 }
 
 export default Icon
