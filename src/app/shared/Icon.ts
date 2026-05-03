@@ -18,13 +18,33 @@ import {
     Filter,
     Package,
     Network,
-    ExternalLink
+    ExternalLink,
+    EyeIcon,
+    EyeClosed,
+    ArrowLeft,
+    Search,
+    ShieldUser,
+    LayoutDashboard,
+    CalendarsIcon,
+    UsersRound,
+    MonitorCloudIcon,
+    UsersRoundIcon,
+    SlidersVerticalIcon,
+    FolderCodeIcon,
+    Trash2Icon,
+    SquarePenIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon
 } from 'lucide-react'
 import { RiGlobalFill, RiInstagramFill } from "react-icons/ri";
 import { IoLogoWhatsapp } from 'react-icons/io'
 import { LuLeaf, LuUsers } from 'react-icons/lu'
-import { FaFacebookF, FaLinkedin, FaInstagram, FaGithub, FaTiktok } from "react-icons/fa6";
+import { FaFacebookF, FaLinkedin, FaInstagram, FaGithub, FaTiktok, FaAnglesRight } from "react-icons/fa6";
 import { AiOutlineFilePdf } from 'react-icons/ai';
+import { FaSignInAlt } from 'react-icons/fa';
+import { PiSignIn } from 'react-icons/pi';
+import { FiLogOut } from 'react-icons/fi';
+import { CiMenuFries } from 'react-icons/ci';
 
 const Icon = {
     IoLogoWhatsapp,
@@ -57,7 +77,27 @@ const Icon = {
     FaTiktok,
     RiInstagramFill,
     ExternalLink,
-    AiOutlineFilePdf
+    AiOutlineFilePdf,
+    FaSignInAlt,
+    PiSignIn,
+    EyeIcon,
+    EyeClosed,
+    ArrowLeft,
+    Search,
+    ShieldUser,
+    LayoutDashboard,
+    CalendarsIcon,
+    UsersRoundIcon,
+    MonitorCloudIcon,
+    SlidersVerticalIcon,
+    FolderCodeIcon,
+    Trash2Icon,
+    SquarePenIcon,
+    FiLogOut,
+    CiMenuFries,
+    FaAnglesRight,
+    ChevronLeftIcon,
+    ChevronRightIcon
 }
 
 export default Icon

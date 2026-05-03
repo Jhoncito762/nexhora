@@ -2,6 +2,9 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Icon from '../../shared/Icon';
+
+const { FaSignInAlt, PiSignIn } = Icon;
 
 const NavBar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,6 +44,14 @@ const NavBar = () => {
                         </Link>
                         <Link href="/contactus" className="text-white bg-black px-3 py-2 rounded-lg hover:cursor-pointer">
                             Contacto
+                        </Link>
+                        <Link
+                            href="/login"
+                            className="text-gray-600 hover:text-gray-800  transition-colors duration-200 text-sm flex items-center gap-1"
+                            title="Acceso interno"
+                        >
+                            <PiSignIn />
+                            Acceder
                         </Link>
                     </nav>
 
@@ -85,6 +96,13 @@ const NavBar = () => {
                             </Link>
                             <Link href="/contactus" className="block py-3 px-4" onClick={closeMenu}>
                                 Contacto
+                            </Link>
+                            <Link
+                                href="/login"
+                                className="block py-3 px-4 text-sm text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                                onClick={closeMenu}
+                            >
+                                Acceder
                             </Link>
                         </motion.nav>
                     )}

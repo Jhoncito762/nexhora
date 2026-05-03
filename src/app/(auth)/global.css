@@ -1,0 +1,63 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+
+:root {
+    color-scheme: light;
+
+    --background: oklch(0.97 0.01 248);
+    --foreground: oklch(0.16 0.01 255);
+
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.16 0.01 255);
+
+    --primary: oklch(0.26 0.13 255);
+    --primary-foreground: oklch(1 0 0);
+
+    --accent: oklch(0.48 0.19 258);
+    --accent-foreground: oklch(1 0 0);
+
+    --muted: oklch(0.93 0.02 248);
+    --muted-foreground: oklch(0.52 0.03 248);
+
+    --border: oklch(0.88 0.02 248);
+    --input: oklch(0.92 0.015 248);
+
+    --ring: oklch(0.48 0.19 258);
+
+    --radius: 0.75rem;
+}
+
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --radius-lg: var(--radius);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

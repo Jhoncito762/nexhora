@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Icon from "@/src/app/shared/Icon";
 import Modal from "@/src/app/shared/Modal";
+import axiosPublic from "@/src/apis/axiosPublic";
 
 const { FaLinkedin, RiInstagramFill, IoLogoWhatsapp } = Icon;
 
@@ -12,24 +13,7 @@ type ApiResponse = {
     error?: string;
 };
 
-function parseApiResponse(raw: string): ApiResponse | null {
-    if (!raw) return null;
 
-    try {
-        const data: unknown = JSON.parse(raw);
-        if (typeof data !== "object" || data === null) return null;
-
-        const record = data as Record<string, unknown>;
-        if (typeof record.ok !== "boolean") return null;
-
-        return {
-            ok: record.ok,
-            error: typeof record.error === "string" ? record.error : undefined,
-        };
-    } catch {
-        return null;
-    }
-}
 
 const COOLDOWN_TIME = 60000; // 60 segundos entre envíos
 const LAST_SUBMIT_KEY = "nexhora_last_contact_submit";
@@ -101,30 +85,16 @@ export default function Page() {
         };
 
         try {
-            const res = await fetch("/api/contact", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-            });
+            const { data } = await axiosPublic.post<ApiResponse>(
+                `${process.env.NEXT_PUBLIC_CONTACT}`,
+                payload
+            );
 
-            const raw = await res.text();
-            const data = parseApiResponse(raw);
-
-            if (!res.ok) {
-                showModal(
-                    "error",
-                    "Algo salió mal",
-                    data?.error ||
-                    "No pudimos procesar tu solicitud en este momento. Por favor verifica tu conexión a internet e inténtalo nuevamente. Si el problema persiste, contáctanos directamente."
-                );
-                return;
-            }
-
-            if (!data?.ok) {
+            if (!data.ok) {
                 showModal(
                     "error",
                     "Error al enviar",
-                    data?.error || "La solicitud no pudo ser procesada correctamente."
+                    data.error || "La solicitud no pudo ser procesada correctamente."
                 );
                 return;
             }
@@ -139,11 +109,11 @@ export default function Page() {
                 "¡Mensaje enviado!",
                 "Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos lo antes posible."
             );
-        } catch {
+        } catch (err) {
             showModal(
                 "error",
-                "Error de conexión",
-                "No pudimos conectar con el servidor. Por favor verifica tu conexión a internet e inténtalo nuevamente."
+                "¡Error al enviar!",
+                "Error al enviar el correo. Por favor intente de nuevo más tarde."
             );
         } finally {
             setLoading(false);

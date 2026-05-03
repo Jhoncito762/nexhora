@@ -131,7 +131,8 @@ export default function Footer() {
 
                     <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-2 sm:gap-6 sm:items-center sm:justify-between">
                         <p className="text-xs text-white/60">
-                            © NexHora SAS. Todos los derechos reservados.
+                            &copy; {new Date().getFullYear()} Nexhora SAS. Todos los derechos reservados.
+
                         </p>
                         <p className="text-xs text-white/60">Hecho en Colombia.</p>
                     </div>
