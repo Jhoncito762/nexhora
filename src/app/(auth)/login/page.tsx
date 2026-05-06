@@ -153,7 +153,7 @@ export default function LoginPage() {
                                     Contraseña
                                 </label>
                                 <a
-                                    href="#"
+                                    href="/login/recover-password"
                                     className="text-accent text-xs hover:underline underline-offset-2 transition-colors"
                                 >
                                     ¿Olvidaste tu contraseña?

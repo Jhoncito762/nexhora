@@ -5,6 +5,8 @@ import { Table, Column, TableAction } from "../../components/Table"
 import Icon from '@/src/app/shared/Icon';
 import axiosPrivate from '@/src/apis/axiosPrivate';
 import { ModuleHeader } from '../../components/ModuleHeader';
+import FormModalUser from '../../components/users/FormModalUser';
+import Modal from '@/src/app/shared/Modal';
 
 const { Trash2Icon, SquarePenIcon } = Icon;
 
@@ -97,24 +99,7 @@ const columns: Column<User>[] = [
     }
 ]
 
-const actions: TableAction[] = [
-    {
-        label: "Editar",
-        variant: "default",
-        icon: (
-            <SquarePenIcon size={16} />
-        ),
-        onClick: (ids) => console.log("Editar:", ids),
-    },
-    {
-        label: "Eliminar",
-        variant: "danger",
-        icon: (
-            <Trash2Icon size={16} />
-        ),
-        onClick: (ids) => console.log("Eliminar:", ids),
-    },
-]
+
 
 export default function UsersModule() {
 
@@ -124,36 +109,75 @@ export default function UsersModule() {
     const [limit, setLimit] = useState(10)
     const [offset, setOffset] = useState(0)
     const [total, setTotal] = useState(0)
+    const [createOpen, setCreateOpen] = useState(false)
+    const [viewId, setViewId] = useState<number | null>(null)
+    const [editId, setEditId] = useState<number | null>(null)
+    const [deleteId, setDeleteId] = useState<number | null>(null)
+    const [isDeleting, setIsDeleting] = useState(false)
 
+    const fetchUsers = async () => {
+        try {
+            const response = await axiosPrivate.get<{ data: User[]; pagination: Pagination }>(
+                process.env.NEXT_PUBLIC_GET_USERS!, {
+                params: { limit, offset }
+            }
+            )
+
+            const { data, pagination } = response.data
+            setUsers(data)
+            setTotal(pagination.totalCount)
+        } catch {
+            setError("No se pudieron cargar los usuarios. Intenta de nuevo.")
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const response = await axiosPrivate.get<{ data: User[]; pagination: Pagination }>(
-                    process.env.NEXT_PUBLIC_GET_USERS!, {
-                    params: { limit, offset }
-                }
-                )
-
-                const { data, pagination } = response.data
-                setUsers(data)
-                setTotal(pagination.totalCount)
-            } catch {
-                setError("No se pudieron cargar los usuarios. Intenta de nuevo.")
-            } finally {
-                setIsLoading(false)
-            }
-        }
-
         fetchUsers()
-    }, [])
+    }, [limit, offset])
+
+    const actions: TableAction[] = [
+        // {
+        //     label: "Ver",
+        //     variant: "default",
+        //     icon: <EyeIcon size={15} />,
+        //     onClick: (ids) => setViewId(Number([...ids][0])),
+        // },
+        {
+            label: "Editar",
+            variant: "default",
+            icon: <SquarePenIcon size={15} />,
+            onClick: (ids) => setEditId(Number([...ids][0])),
+        },
+        {
+            label: "Eliminar",
+            variant: "danger",
+            icon: <Trash2Icon size={15} />,
+            onClick: (ids) => setDeleteId(Number([...ids][0])),
+        },
+    ]
+
+    const handleDelete = async () => {
+        if (!deleteId) return
+        setIsDeleting(true)
+        try {
+            await axiosPrivate.delete(`${process.env.NEXT_PUBLIC_GET_USERS}/${deleteId}`)
+            setDeleteId(null)
+            fetchUsers()
+        } catch {
+            setDeleteId(null)
+        } finally {
+            setIsDeleting(false)
+        }
+    }
     return (
         <>
             <ModuleHeader
                 title="Gestión de Usuarios"
                 description="Administra, filtra y monitorea todos los usuarios de la organización."
                 buttonLabel="Nuevo usuario"
-                onButtonClick={() => console.log("Nuevo rol")}
+                onButtonClick={() => setCreateOpen(true)}
             />
 
             <div className="mt-6">
@@ -184,6 +208,32 @@ export default function UsersModule() {
                     />
                 )}
             </div>
+
+            <FormModalUser
+                isOpen={createOpen}
+                onClose={() => setCreateOpen(false)}
+                onSuccess={fetchUsers}
+            />
+
+            {/* Editar */}
+            <FormModalUser
+                isOpen={editId !== null}
+                userId={editId ?? undefined}
+                onClose={() => setEditId(null)}
+                onSuccess={fetchUsers}
+            />
+
+            <Modal
+                isOpen={deleteId !== null}
+                onClose={() => setDeleteId(null)}
+                type="warning"
+                title="Eliminar usuario"
+                message={`¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.`}
+                confirmText={isDeleting ? "Eliminando..." : "Eliminar"}
+                cancelText="Cancelar"
+                showCancel
+                onConfirm={handleDelete}
+            />
         </>
     )
 }

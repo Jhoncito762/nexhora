@@ -34,7 +34,15 @@ import {
     Trash2Icon,
     SquarePenIcon,
     ChevronLeftIcon,
-    ChevronRightIcon
+    ChevronRightIcon,
+    MailIcon,
+    ShieldCheckIcon,
+    LockIcon,
+    CheckCircle2Icon,
+    EyeOff,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    Loader2Icon
 } from 'lucide-react'
 import { RiGlobalFill, RiInstagramFill } from "react-icons/ri";
 import { IoLogoWhatsapp } from 'react-icons/io'
@@ -80,7 +88,6 @@ const Icon = {
     AiOutlineFilePdf,
     FaSignInAlt,
     PiSignIn,
-    EyeIcon,
     EyeClosed,
     ArrowLeft,
     Search,
@@ -97,7 +104,16 @@ const Icon = {
     CiMenuFries,
     FaAnglesRight,
     ChevronLeftIcon,
-    ChevronRightIcon
+    ChevronRightIcon,
+    MailIcon,
+    ShieldCheckIcon,
+    LockIcon,
+    CheckCircle2Icon,
+    EyeIcon,
+    EyeOff,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    Loader2Icon,
 }
 
 export default Icon

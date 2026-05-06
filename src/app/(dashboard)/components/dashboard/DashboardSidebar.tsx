@@ -51,21 +51,21 @@ const navItems = [
     },
     {
         label: "Servicios",
-        href: "/dashboard/servicios",
+        href: "/dashboard/services",
         icon: (
             <MonitorCloudIcon size={22} />
         ),
     },
     {
         label: "Eventos",
-        href: "/dashboard/eventos",
+        href: "/dashboard/events",
         icon: (
             <CalendarsIcon size={22} />
         ),
     },
     {
         label: "Parámetros",
-        href: "/dashboard/parametros",
+        href: "/dashboard/parameters",
         icon: (
             <SlidersVerticalIcon size={22} />
         ),
@@ -80,7 +80,10 @@ interface DashboardSidebarProps {
 export function DashboardSidebar({ mobileOpen, onMobileClose }: DashboardSidebarProps) {
     const pathname = usePathname()
     const [collapsed, setCollapsed] = useState(false)
-    const { decodedToken } = useAuthStore()
+    const { decodedToken, profileData } = useAuthStore()
+    const displayName = profileData?.nombre ?? decodedToken?.nombre
+    const displayEmail = profileData?.correo ?? decodedToken?.correo
+    const displayFoto = profileData?.foto ?? decodedToken?.foto
 
     useEffect(() => {
         onMobileClose()
@@ -174,14 +177,25 @@ export function DashboardSidebar({ mobileOpen, onMobileClose }: DashboardSidebar
                     className={`flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-sidebar-accent/50 cursor-pointer transition-colors group ${collapsed ? "justify-center" : ""
                         }`}
                 >
-                    <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center shrink-0">
-                        <span className="text-white text-xs font-bold">{decodedToken?.nombre.slice(0, 1)}</span>
+                    <div className="w-7 h-7 rounded-full bg-accent flex items-center justify-center shrink-0 overflow-hidden">
+                        {displayFoto ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                                src={displayFoto}
+                                alt="Foto de usuario"
+                                className="object-cover w-full h-full"
+                            />
+                        ) : (
+                            <span className="text-white text-xs font-bold">
+                                {displayName?.charAt(0)}
+                            </span>
+                        )}
                     </div>
                     {!collapsed && (
                         <>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sidebar-foreground text-xs font-medium truncate">{decodedToken?.nombre}</p>
-                                <p className="text-sidebar-foreground/40 text-xs truncate">{decodedToken?.correo}</p>
+                                <p className="text-sidebar-foreground text-xs font-medium truncate">{displayName}</p>
+                                <p className="text-sidebar-foreground/40 text-xs truncate">{displayEmail}</p>
                             </div>
                             <Link
                                 href="/login"

@@ -1,9 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { DashboardSidebar } from "./DashboardSidebar"
 import Icon from "@/src/app/shared/Icon"
 import { useAuthStore } from "@/src/hooks/authStore"
+import { useRouter } from "next/navigation"
+import { User, LogOut } from "lucide-react"
+import ProfileModal from "../profile/ProfileModal"
 
 interface DashboardShellProps {
     children: React.ReactNode
@@ -14,12 +17,38 @@ const { Search } = Icon;
 
 export function DashboardShell({ children, today }: DashboardShellProps) {
     const [mobileOpen, setMobileOpen] = useState(false)
+    const [dropdownOpen, setDropdownOpen] = useState(false)
+    const [profileOpen, setProfileOpen] = useState(false)
+    const dropdownRef = useRef<HTMLDivElement>(null)
     const initAuth = useAuthStore((state) => state.initAuth)
-    const { decodedToken } = useAuthStore();
+    const logout = useAuthStore((state) => state.logout)
+    const { decodedToken, profileData } = useAuthStore();
+    const displayName = profileData?.nombre ?? decodedToken?.nombre
+    const displayEmail = profileData?.correo ?? decodedToken?.correo
+    const displayFoto = profileData?.foto ?? decodedToken?.foto
+    const router = useRouter()
 
     useEffect(() => {
         initAuth()
     }, [initAuth])
+
+    // Close dropdown on outside click
+    useEffect(() => {
+        if (!dropdownOpen) return
+        const handler = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setDropdownOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", handler)
+        return () => document.removeEventListener("mousedown", handler)
+    }, [dropdownOpen])
+
+    const handleLogout = () => {
+        setDropdownOpen(false)
+        logout()
+        router.push("/login")
+    }
 
     return (
         <div className="flex min-h-screen bg-background">
@@ -66,8 +95,54 @@ export function DashboardShell({ children, today }: DashboardShellProps) {
                             />
                         </div>
 
-                        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-                            <span className="text-white text-xs font-bold" aria-label="Usuario: Admin">{decodedToken?.nombre.slice(0, 1)}</span>
+                        {/* Avatar + dropdown */}
+                        <div ref={dropdownRef} className="relative">
+                            <button
+                                onClick={() => setDropdownOpen(v => !v)}
+                                className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shrink-0 overflow-hidden ring-2 ring-transparent hover:ring-accent transition-all focus:outline-none focus:ring-accent"
+                                aria-label="Menú de usuario"
+                                aria-expanded={dropdownOpen}
+                            >
+                                {decodedToken?.foto ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img
+                                        src={displayFoto}
+                                        alt="Foto de usuario"
+                                        className="object-cover w-full h-full"
+                                    />
+                                ) : (
+                                    <span className="text-white text-xs font-bold">
+                                        {displayName?.charAt(0)}
+                                    </span>
+                                )}
+                            </button>
+
+                            {dropdownOpen && (
+                                <div className="absolute right-0 top-11 w-52 bg-card border border-border rounded-xl shadow-xl overflow-hidden z-50 animate-in fade-in zoom-in-95 duration-150">
+                                    {/* User info */}
+                                    <div className="px-4 py-3 border-b border-border">
+                                        <p className="text-foreground text-sm font-semibold truncate">{displayName}</p>
+                                        <p className="text-muted-foreground text-xs truncate">{displayEmail}</p>
+                                    </div>
+                                    {/* Options */}
+                                    <div className="py-1">
+                                        <button
+                                            onClick={() => { setDropdownOpen(false); setProfileOpen(true) }}
+                                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors"
+                                        >
+                                            <User size={15} className="text-muted-foreground" />
+                                            Mi perfil
+                                        </button>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
+                                        >
+                                            <LogOut size={15} />
+                                            Cerrar sesión
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </header>
@@ -77,6 +152,15 @@ export function DashboardShell({ children, today }: DashboardShellProps) {
                     {children}
                 </main>
             </div>
+
+            {decodedToken?.usuario_id && (
+                <ProfileModal
+                    isOpen={profileOpen}
+                    userId={decodedToken.usuario_id}
+                    onClose={() => setProfileOpen(false)}
+                />
+            )}
         </div>
     )
 }
+

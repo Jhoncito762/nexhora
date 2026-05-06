@@ -6,18 +6,27 @@ type DecodedToken = {
   rol: string;
   correo: string;
   nombre: string;
+  foto: string;
   iat: number;
   exp: number;
+};
+
+type ProfileData = {
+  nombre: string;
+  correo: string;
+  foto: string;
 };
 
 type AuthState = {
   token: string | null;
   refreshToken: string | null;
   decodedToken: DecodedToken | null;
+  profileData: ProfileData | null;
   permissions: string[];
   isLoading: boolean;
   setTokens: (access_token: string, refresh_token: string) => void;
   updateToken: (newToken: string) => void;
+  setProfileData: (data: Partial<ProfileData>) => void;
   logout: () => void;
   initAuth: () => void;
 };
@@ -26,6 +35,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   refreshToken: null,
   decodedToken: null,
+  profileData: null,
   permissions: [],
   isLoading: true,
 
@@ -38,6 +48,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       token: token,
       refreshToken: refreshToken,
       decodedToken: decoded,
+      profileData: { nombre: decoded.nombre, correo: decoded.correo, foto: decoded.foto },
       permissions: decoded.rol ? [decoded.rol] : [],
     });
   },
@@ -49,9 +60,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({
       token: newToken,
       decodedToken: decoded,
+      profileData: { nombre: decoded.nombre, correo: decoded.correo, foto: decoded.foto },
       permissions: decoded.rol ? [decoded.rol] : [],
     });
   },
+
+  setProfileData: (data) =>
+    set((state) => ({
+      profileData: { ...(state.profileData ?? { nombre: "", correo: "", foto: "" }), ...data },
+    })),
 
   logout: () => {
     localStorage.removeItem("token");
@@ -61,6 +78,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       token: null,
       refreshToken: null,
       decodedToken: null,
+      profileData: null,
       permissions: [],
     });
   },
@@ -76,6 +94,7 @@ export const useAuthStore = create<AuthState>((set) => ({
           token,
           refreshToken: refresh_token,
           decodedToken: decoded,
+          profileData: { nombre: decoded.nombre, correo: decoded.correo, foto: decoded.foto },
           permissions: decoded.rol ? [decoded.rol] : [],
         });
       } catch (err) {
