@@ -4,12 +4,11 @@ import React, { useState } from "react";
 import Icon from "../../../shared/Icon";
 import { ChevronDown } from "lucide-react";
 
-type ServiceCategory = {
-    id: number;
-    title: string;
-    description: string;
-    services: string[];
-    differential?: string;
+type Servicio = {
+    servicio_id: number;
+    nombre: string;
+    descripcion: string;
+    caracteristicas: string[];
 };
 
 const iconMap: Record<number, React.ElementType> = {
@@ -23,9 +22,9 @@ const iconMap: Record<number, React.ElementType> = {
     8: Icon.ShieldCheck,
 };
 
-export default function ServiceCard({ category }: { category: ServiceCategory }) {
+export default function ServiceCard({ servicio }: { servicio: Servicio }) {
     const [isOpen, setIsOpen] = useState(false);
-    const IconComponent = iconMap[category.id];
+    const IconComponent = iconMap[servicio.servicio_id];
 
     return (
         <article className="group relative flex flex-col rounded-2xl border border-[#c7d6f0]/50 bg-white transition-all duration-300 hover:border-[#4f79c7]/40 hover:shadow-[0_12px_48px_-8px_rgba(34,64,171,0.1)]">
@@ -36,29 +35,20 @@ export default function ServiceCard({ category }: { category: ServiceCategory })
                         <IconComponent size={20} className="text-[#076490]" />
                     </div>
                     <span className="font-mono text-[11px] font-medium tracking-widest text-[#c7d6f0]">
-                        {String(category.id).padStart(2, "0")}
+                        {String(servicio.servicio_id).padStart(2, "0")}
                     </span>
                 </div>
 
                 {/* Title */}
                 <h3 className="mt-5 text-[15px] font-semibold leading-snug text-[#1a2847] text-balance">
-                    {category.title}
+                    {servicio.nombre}
                 </h3>
 
                 {/* Description */}
                 <p className="mt-2 text-[13px] leading-relaxed text-[#64748b]">
-                    {category.description}
+                    {servicio.descripcion}
                 </p>
 
-                {/* Differential badge */}
-                {category.differential && (
-                    <div className="mt-4">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-[#076490]/10 bg-[#076490]/5 px-3 py-1 text-[11px] font-medium text-[#076490]">
-                            <Icon.Sparkles size={10} />
-                            {category.differential}
-                        </span>
-                    </div>
-                )}
 
                 {/* Expandable services */}
                 <div className="mt-auto pt-5">
@@ -78,13 +68,13 @@ export default function ServiceCard({ category }: { category: ServiceCategory })
 
                     <div
                         className={`grid transition-all duration-400 ease-in-out ${isOpen
-                                ? "grid-rows-[1fr] opacity-100"
-                                : "grid-rows-[0fr] opacity-0"
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0"
                             }`}
                     >
                         <div className="overflow-hidden">
                             <ul className="mt-4 flex flex-col gap-2.5">
-                                {category.services.map((item) => (
+                                {servicio.caracteristicas.map((item) => (
                                     <li key={item} className="flex items-start gap-2.5">
                                         <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#076490]/8">
                                             <Icon.Check

@@ -1,16 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../../shared/Icon";
 import ServiceCard from "./components/ServiceCard";
 import Link from "next/link";
+import axiosPublic from "@/src/apis/axiosPublic";
 
-type ServiceCategory = {
-    id: number;
-    title: string;
-    description: string;
-    services: string[];
-    differential?: string;
+type Servicio = {
+    servicio_id: number;
+    nombre: string;
+    descripcion: string;
+    caracteristicas: string[];
 };
 
 const content = {
@@ -23,109 +23,38 @@ const content = {
             { label: "Alineación con los ODS", icon: Icon.Target },
             { label: "Resultados medibles", icon: Icon.Globe },
         ],
-    },
-    services: [
-        {
-            id: 1,
-            title: "Consultoría en Innovación y Transformación Digital",
-            description:
-                "Modernización estratégica de procesos mediante transformación digital sostenible.",
-            services: [
-                "Diagnóstico de madurez digital (TRL, TDM)",
-                "Estrategias de transformación digital",
-                "Gestión tecnológica y automatización",
-                "Gobernanza de datos y ética digital",
-                "Transición a economía circular digital",
-            ],
-            differential: "Enfoque sostenible con IA responsable",
-        },
-        {
-            id: 2,
-            title: "Desarrollo de Software e Inteligencia Artificial",
-            description:
-                "Soluciones tecnológicas a medida con IA aplicada y arquitecturas modernas.",
-            services: [
-                "Software web, móvil y escritorio",
-                "Plataformas de IA y analítica avanzada",
-                "Modelos predictivos e IA generativa",
-                "Arquitecturas cloud-native (AWS, Azure, GCP)",
-                "IoT, Big Data y ciberseguridad",
-            ],
-        },
-        {
-            id: 3,
-            title: "IoT, Automatización e Infraestructura Digital",
-            description:
-                "Ecosistemas inteligentes conectando personas, procesos y dispositivos.",
-            services: [
-                "Redes de sensores agrícolas e industriales",
-                "Automatización industria 4.0",
-                "Monitoreo de clima, suelo, agua y energía",
-                "Integración hardware/software segura",
-                "Conectividad rural (4G, 5G, LoRa, NB-IoT)",
-            ],
-        },
-        {
-            id: 4,
-            title: "Sostenibilidad e Innovación Verde",
-            description: "Soluciones ambientales digitales y economía circular.",
-            services: [
-                "Medición de huella de carbono",
-                "Análisis de ciclo de vida",
-                "Gestión ambiental digital",
-                "Bioeconomía y energía limpia",
-                "Responsabilidad social corporativa",
-            ],
-        },
-        {
-            id: 5,
-            title: "Análisis de Datos y Gestión del Conocimiento",
-            description: "Transformación de datos en decisiones estratégicas.",
-            services: [
-                "Minería de datos y BI",
-                "Modelos predictivos y prescriptivos",
-                "Capacitación en Python, Power BI, Tableau, R",
-                "Gestión de información y datos abiertos",
-            ],
-        },
-        {
-            id: 6,
-            title: "Capacitación e Inclusión Digital STEAM",
-            description: "Formación práctica para cerrar brechas tecnológicas.",
-            services: [
-                "Formación en IA ética y habilidades digitales",
-                "Cursos para docentes y emprendedores",
-                "Programas para mujeres y comunidades rurales",
-                "Alianzas con universidades y redes",
-            ],
-        },
-        {
-            id: 7,
-            title: "Ecosistemas de Innovación Abierta",
-            description:
-                "Cocreación tecnológica entre academia, empresa y sociedad.",
-            services: [
-                "Laboratorios de innovación y fablabs",
-                "Aceleración de startups",
-                "Alianzas con clústeres y cámaras",
-                "Proyectos alineados a ODS",
-            ],
-        },
-        {
-            id: 8,
-            title: "Ciberseguridad y Protección de Datos",
-            description: "Seguridad integral para sistemas digitales.",
-            services: [
-                "Auditorías y pruebas de penetración",
-                "Cumplimiento ISO 27001, GDPR, Ley 1581",
-                "Firewalls y encriptación avanzada",
-                "Seguridad IoT y formación empresarial",
-            ],
-        },
-    ] satisfies ServiceCategory[],
+    }
 };
 
 export default function Page() {
+    const [services, setServices] = useState<Servicio[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<String | null>(null)
+
+    const fetchServices = async () => {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const response = await axiosPublic.get<{ services: Servicio[] }>(
+                process.env.NEXT_PUBLIC_PUBLIC_SERVICES!
+            )
+
+            const { services } = response.data;
+
+            setServices(services)
+        } catch (error) {
+            setError("No se pudieron cargar los productos. Intente de nuevo")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchServices()
+    }, [])
+
+
+
     return (
         <main className="relative min-h-screen w-full bg-[#f8fafd]">
             {/* Subtle background accents */}
@@ -217,11 +146,34 @@ export default function Page() {
             {/* ── Cards grid ── */}
             <section className="relative pt-8 pb-20">
                 <div className="mx-auto max-w-6xl px-5 sm:px-8">
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                        {content.services.map((category) => (
-                            <ServiceCard key={category.id} category={category} />
-                        ))}
-                    </div>
+                    {isLoading ? (
+                        <div className="flex justify-center items-center py-20">
+                            <svg viewBox="0 0 57 60" xmlns="http://www.w3.org/2000/svg" stroke="#076490" width={57} height={60}>
+                                <g fill="none" fillRule="evenodd">
+                                    <g transform="translate(1 1)" strokeWidth="3">
+                                        <circle cx="5" cy="50" r="5">
+                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="50;5;50;50" calcMode="linear" repeatCount="indefinite" />
+                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="5;27;49;5" calcMode="linear" repeatCount="indefinite" />
+                                        </circle>
+                                        <circle cx="27" cy="5" r="5">
+                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="5;50;50;5" calcMode="linear" repeatCount="indefinite" />
+                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="27;49;5;27" calcMode="linear" repeatCount="indefinite" />
+                                        </circle>
+                                        <circle cx="49" cy="50" r="5">
+                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="50;50;5;50" calcMode="linear" repeatCount="indefinite" />
+                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="49;5;27;49" calcMode="linear" repeatCount="indefinite" />
+                                        </circle>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                            {services.map((servicio) => (
+                                <ServiceCard key={servicio.servicio_id} servicio={servicio} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 

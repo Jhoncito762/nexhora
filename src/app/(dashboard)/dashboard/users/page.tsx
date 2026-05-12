@@ -19,6 +19,8 @@ type User = {
     estado: boolean
     rol_id: number
     rol_nombre: string
+    cargo: string
+    link_web: string
     created_at: string
     updated_at: string
 }
@@ -66,20 +68,10 @@ const columns: Column<User>[] = [
         render: (row) => <span className="font-medium">{capitalize(row.rol_nombre)}</span>,
     },
     {
-        key: "created_at",
-        label: "Creado",
+        key: "cargo",
+        label: "Cargo",
         sortable: true,
-        render: (row) => {
-            const fecha = new Date(row.created_at)
-            const fechaFormateada = fecha.toLocaleString('es-CO', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            })
-            return <span className="font-medium">{fechaFormateada}</span>
-        },
+        render: (row) => <span className="font-medium">{row.cargo}</span>,
     },
     {
         key: "updated_at",
@@ -116,6 +108,8 @@ export default function UsersModule() {
     const [isDeleting, setIsDeleting] = useState(false)
 
     const fetchUsers = async () => {
+        setIsLoading(true)
+        setError(null)
         try {
             const response = await axiosPrivate.get<{ data: User[]; pagination: Pagination }>(
                 process.env.NEXT_PUBLIC_GET_USERS!, {

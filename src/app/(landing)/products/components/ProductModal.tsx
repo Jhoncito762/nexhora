@@ -3,18 +3,19 @@
 import React, { useEffect } from "react";
 import { X, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Product } from "./CatalogProducts";
+import { Product, ProductDetail } from "./CatalogProducts";
 import Icon from "../../../shared/Icon";
 
 const { Sparkles } = Icon;
 
 interface ProductModalProps {
-    product: Product | null;
+    product: ProductDetail | null;
     isOpen: boolean;
     onClose: () => void;
+    loading: boolean;
 }
 
-export default function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
+export default function ProductModal({ product, isOpen, onClose, loading }: ProductModalProps) {
     // Bloquear scroll cuando el modal está abierto
     useEffect(() => {
         if (isOpen) {
@@ -27,7 +28,27 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
         };
     }, [isOpen]);
 
-    if (!product) return null;
+    if (loading) return (
+        <svg viewBox="0 0 57 60" xmlns="http://www.w3.org/2000/svg" stroke="#E6E6E6FF">
+            <g fill="none" fillRule="evenodd">
+                <g transform="translate(1 1)" strokeWidth="3">
+                    <circle cx="5" cy="50" r="5">
+                        <animate attributeName="cy" begin="0s" dur="2.2s" values="50;5;50;50" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="cx" begin="0s" dur="2.2s" values="5;27;49;5" calcMode="linear" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="27" cy="5" r="5">
+                        <animate attributeName="cy" begin="0s" dur="2.2s" values="5;50;50;5" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="cx" begin="0s" dur="2.2s" values="27;49;5;27" calcMode="linear" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="49" cy="50" r="5">
+                        <animate attributeName="cy" begin="0s" dur="2.2s" values="50;50;5;50" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="cx" begin="0s" dur="2.2s" values="49;5;27;49" calcMode="linear" repeatCount="indefinite" />
+                    </circle>
+                </g>
+            </g>
+        </svg>
+    )
+    if (!product) return null
 
     return (
         <AnimatePresence>
@@ -64,10 +85,10 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                                     <span>Producto NexHora</span>
                                 </div>
                                 <h2 className="text-2xl font-bold leading-tight sm:text-3xl">
-                                    {product.name}
+                                    {product.nombre}
                                 </h2>
                                 <p className="mt-2 text-base text-blue-100 sm:text-lg">
-                                    {product.tagline}
+                                    {product.eslogan}
                                 </p>
                             </div>
 
@@ -90,12 +111,12 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                                     Descripción
                                 </h3>
                                 <p className="text-[15px] leading-relaxed text-slate-600 sm:text-base">
-                                    {product.description}
+                                    {product.descripcion}
                                 </p>
                             </section>
 
                             {/* Módulos (Grid Cards) */}
-                            {product.modules && product.modules.length > 0 && (
+                            {product.modulos && product.modulos.length > 0 && (
                                 <section className="mb-10">
                                     <div className="mb-4 flex items-center gap-2">
                                         <Icon.Layers size={18} className="text-[#1a5fb4]" />
@@ -104,7 +125,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                                         </h3>
                                     </div>
                                     <div className="grid gap-4 sm:grid-cols-2">
-                                        {product.modules.map((module, idx) => (
+                                        {product.modulos.map((module, idx) => (
                                             <div
                                                 key={idx}
                                                 className="group relative flex flex-col rounded-xl border border-slate-200 bg-slate-50/50 p-5 transition-all hover:border-blue-200 hover:bg-blue-50/30 hover:shadow-sm"
@@ -114,11 +135,11 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                                                         {idx + 1}
                                                     </span>
                                                     <h4 className="font-semibold text-slate-800 text-sm">
-                                                        {module.name}
+                                                        {module.nombre}
                                                     </h4>
                                                 </div>
                                                 <p className="pl-9 text-bs leading-snug text-slate-600">
-                                                    {module.description}
+                                                    {module.descripcion}
                                                 </p>
                                             </div>
                                         ))}
@@ -127,7 +148,7 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                             )}
 
                             {/* Características Principales (Lista) */}
-                            {product.features && product.features.length > 0 && (
+                            {product.caracteristicas && product.caracteristicas.length > 0 && (
                                 <section>
                                     <div className="mb-4 flex items-center gap-2">
                                         <Check size={18} className="text-[#1a5fb4]" />
@@ -136,13 +157,13 @@ export default function ProductModal({ product, isOpen, onClose }: ProductModalP
                                         </h3>
                                     </div>
                                     <ul className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                                        {product.features.map((feature, idx) => (
+                                        {product.caracteristicas.map((caracteristica, idx) => (
                                             <li key={idx} className="flex items-start gap-2.5">
                                                 <div className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-blue-200 bg-blue-50">
                                                     <Check size={10} className="text-[#1a5fb4]" strokeWidth={3} />
                                                 </div>
                                                 <span className="text-[14px] text-slate-600">
-                                                    {feature}
+                                                    {caracteristica.descripcion}
                                                 </span>
                                             </li>
                                         ))}

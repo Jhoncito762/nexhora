@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { X, Upload, UserCircle } from "lucide-react"
 import axiosPrivate from "@/src/apis/axiosPrivate"
-import Modal from "@/src/app/shared/Modal"
 
 interface Rol {
     rol_id: number
@@ -18,6 +17,8 @@ interface FormData {
     foto_link: string
     estado: boolean
     rol_id: number
+    cargo: string
+    link_web: string
 }
 
 export interface FormModalUserProps {
@@ -33,6 +34,8 @@ const emptyForm = (): FormData => ({
     telefono: "",
     password: "",
     foto_link: "",
+    cargo: "",
+    link_web: "",
     estado: true,
     rol_id: 1,
 })
@@ -51,7 +54,6 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [showSuccess, setShowSuccess] = useState(false)
     const photoInputRef = useRef<HTMLInputElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -100,6 +102,8 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
                         telefono: (d.telefono as string) ?? "",
                         password: "",
                         foto_link: (d.foto_link as string) ?? "",
+                        cargo: (d.cargo as string) ?? "",
+                        link_web: (d.link_web as string) ?? "",
                         estado: (d.estado as boolean) ?? true,
                         rol_id: (d.rol_id as number),
                     })
@@ -139,42 +143,45 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
         setIsSubmitting(true)
 
         try {
-            const payload: Record<string, unknown> = {
-                nombre_completo: form.nombre_completo,
-                correo: form.correo,
-                telefono: form.telefono,
-                estado: form.estado,
-                rol_id: Number(form.rol_id),
-            }
-            if (!isEdit && form.password) payload.password = form.password
-
-            let targetId: number
+            const fd = new globalThis.FormData()
+            fd.append("nombre_completo", form.nombre_completo)
+            fd.append("correo", form.correo)
+            fd.append("telefono", form.telefono)
+            fd.append("cargo", String(form.cargo))
+            fd.append("link_web", String(form.link_web))
+            fd.append("estado", String(form.estado))
+            fd.append("rol_id", String(Number(form.rol_id)))
 
             if (isEdit && userId) {
-                await axiosPrivate.patch(`${process.env.NEXT_PUBLIC_GET_USERS}/${userId}`, payload)
-                targetId = userId
-            } else {
-                const res = await axiosPrivate.post<Record<string, unknown>>(
-                    process.env.NEXT_PUBLIC_GET_USERS!,
-                    payload
-                )
-                const rd = res.data
-                targetId = ((rd.usuario_id ?? rd.userId ?? (rd.data as Record<string, unknown>)?.usuario_id)) as number
-            }
+                // Foto nueva → multer la sube y sobreescribe
+                // Foto existente sin cambio → preservamos la URL actual en el body
+                // Foto eliminada → no se manda nada → queda null en BD
+                if (photoFile) {
+                    fd.append("foto", photoFile)
+                } else if (form.foto_link) {
+                    fd.append("foto_link", form.foto_link)
+                }
 
-            // Upload photo separately if a new file was selected
-            if (photoFile && targetId) {
-                const fd = new globalThis.FormData()
-                fd.append("foto", photoFile)
                 await axiosPrivate.patch(
-                    `${process.env.NEXT_PUBLIC_GET_USERS}/${targetId}`,
+                    `${process.env.NEXT_PUBLIC_GET_USERS}/${userId}`,
+                    fd,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                )
+            } else {
+                fd.append("password", form.password)
+                if (photoFile) fd.append("foto", photoFile)
+
+                await axiosPrivate.post(
+                    process.env.NEXT_PUBLIC_GET_USERS!,
                     fd,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 )
             }
 
-            setShowSuccess(true)
-        } catch {
+            onSuccess?.()
+            onClose()
+        } catch (err) {
+            console.error("Error al guardar usuario:", err)
             setError("Ocurrió un error al guardar el usuario. Intenta de nuevo.")
         } finally {
             setIsSubmitting(false)
@@ -328,6 +335,26 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
                                                 />
                                             </div>
                                         )}
+                                        <div>
+                                            <label className={labelClass}>Cargo *</label>
+                                            <input
+                                                required
+                                                type="cargo"
+                                                value={form.cargo}
+                                                onChange={e => setField("cargo", e.target.value)}
+                                                placeholder="Dueño"
+                                                className={inputClass}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className={labelClass}>Link Personal</label>
+                                            <input
+                                                value={form.link_web}
+                                                onChange={e => setField("link_web", e.target.value)}
+                                                placeholder="linkedin"
+                                                className={inputClass}
+                                            />
+                                        </div>
                                     </div>
                                 </section>
 
@@ -373,12 +400,13 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
                                     </div>
                                 </section>
 
-                                {error && (
-                                    <p className="text-destructive text-sm text-center px-3 py-2 rounded-xl bg-destructive/10 border border-destructive/20">
-                                        {error}
-                                    </p>
-                                )}
                             </div>
+
+                            {error && (
+                                <p className="mx-6 text-destructive text-sm text-center px-3 py-2 rounded-xl bg-destructive/10 border border-destructive/20">
+                                    {error}
+                                </p>
+                            )}
 
                             <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-border shrink-0">
                                 <button
@@ -408,18 +436,6 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
                 </div>
             </div>
 
-            <Modal
-                isOpen={showSuccess}
-                onClose={() => {
-                    setShowSuccess(false)
-                    onSuccess?.()
-                    onClose()
-                }}
-                type="success"
-                title={isEdit ? "¡Usuario actualizado!" : "¡Usuario creado!"}
-                message={isEdit ? "Los cambios fueron guardados exitosamente." : "El usuario fue registrado exitosamente."}
-                confirmText="Aceptar"
-            />
         </>
     )
 }
