@@ -89,6 +89,12 @@ export default function Footer() {
                                             Productos
                                         </Link>
                                         <Link
+                                            href="/events"
+                                            className="text-white/80 hover:text-white"
+                                        >
+                                            Eventos
+                                        </Link>
+                                        <Link
                                             href="/contactus"
                                             className="text-white/80 hover:text-white"
                                         >

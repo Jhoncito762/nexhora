@@ -167,6 +167,16 @@ export default function Page() {
                                 </g>
                             </svg>
                         </div>
+                    ) : error ? (
+                        <div className="flex flex-col items-center justify-center py-20 text-center">
+                            <p className="text-red-500 font-semibold mb-4">{error}</p>
+                            <button
+                                onClick={fetchServices}
+                                className="rounded-lg bg-[#076490] px-5 py-2 text-sm font-semibold text-white hover:bg-[#065a82] transition-colors"
+                            >
+                                Reintentar
+                            </button>
+                        </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
                             {services.map((servicio) => (

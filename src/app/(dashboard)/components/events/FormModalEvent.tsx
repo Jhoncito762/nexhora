@@ -115,6 +115,8 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
     const setField = (field: keyof FormData, value: string) =>
         setForm(prev => ({ ...prev, [field]: value }))
 
+    const MAX_IMAGES = 3
+
     const handleFiles = (files: FileList | null) => {
         if (!files) return
         const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]
@@ -130,7 +132,10 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
                 alt: "",
             })
         }
-        setImages(prev => [...prev, ...incoming])
+        setImages(prev => {
+            const combined = [...prev, ...incoming]
+            return combined.slice(0, MAX_IMAGES)
+        })
     }
 
     const setImageAlt = (index: number, alt: string) =>
@@ -170,48 +175,50 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
         }
 
         try {
-            const payload = {
-                titulo: form.titulo,
-                resumen: form.resumen,
-                descripcion: form.descripcion,
-                fechaEvento: form.fecha_evento.toISOString(),
-            }
-
-            let targetId: number
+            const fechaStr = form.fecha_evento.toISOString().split("T")[0]
 
             if (isEdit && eventoId) {
-                // Update existing product
+                // Update: PATCH JSON then upload images separately
                 await axiosPrivate.patch(
                     `${process.env.NEXT_PUBLIC_EVENTS}/${eventoId}`,
-                    payload
+                    {
+                        titulo: form.titulo,
+                        resumen: form.resumen,
+                        descripcion: form.descripcion,
+                        fechaEvento: fechaStr,
+                    }
                 )
-                targetId = eventoId
+
+                for (const img of images) {
+                    const fd = new globalThis.FormData()
+                    fd.append("imagenes", img.file)
+                    if (img.alt.trim()) fd.append("alt", img.alt.trim())
+                    await axiosPrivate.post(
+                        `${process.env.NEXT_PUBLIC_EVENTS}/${eventoId}/imagenes`,
+                        fd,
+                        { headers: { "Content-Type": "multipart/form-data" } }
+                    )
+                }
             } else {
-                // Create new product
-                const response = await axiosPrivate.post<Record<string, unknown>>(
-                    process.env.NEXT_PUBLIC_EVENTS!,
-                    payload
-                )
-                const responseData = response.data
-                targetId = ((responseData.producto_id ?? (responseData.data as Record<string, unknown>)?.producto_id)) as number
-            }
-
-            // Upload new images
-            for (const img of images) {
-                const formData = new globalThis.FormData()
-                formData.append("imagen", img.file)
-                if (img.alt.trim()) formData.append("alt", img.alt.trim())
-
+                // Create: single multipart/form-data request
+                const fd = new globalThis.FormData()
+                fd.append("titulo", form.titulo)
+                fd.append("descripcion", form.descripcion)
+                if (form.resumen.trim()) fd.append("resumen", form.resumen)
+                fd.append("fechaEvento", fechaStr)
+                for (const img of images.slice(0, MAX_IMAGES)) {
+                    fd.append("imagenes", img.file)
+                }
                 await axiosPrivate.post(
-                    `${process.env.NEXT_PUBLIC_EVENTS}/${targetId}/imagenes`,
-                    formData,
+                    process.env.NEXT_PUBLIC_EVENTS!,
+                    fd,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 )
             }
 
             setShowSuccess(true)
         } catch {
-            setError("Ocurrió un error al guardar el producto. Intenta de nuevo.")
+            setError("Ocurrió un error al guardar el evento. Intenta de nuevo.")
         } finally {
             setIsSubmitting(false)
         }
@@ -231,12 +238,12 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
                     <div className="flex items-center justify-between px-6 py-4 border-b border-border shrink-0">
                         <div>
                             <h2 className="text-foreground font-bold text-lg">
-                                {isEdit ? "Editar Producto" : "Nuevo Producto"}
+                                {isEdit ? "Editar Evento" : "Nuevo Evento"}
                             </h2>
                             <p className="text-muted-foreground text-xs mt-0.5">
                                 {isEdit
-                                    ? "Modifica la información del producto."
-                                    : "Completa la información del producto a registrar."}
+                                    ? "Modifica la información del evento."
+                                    : "Completa la información del evento a registrar."}
                             </p>
                         </div>
                         <button
@@ -279,7 +286,7 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
                                         <div>
                                             <label className={labelClass}>Resumen</label>
                                             <input
-                                                type="url"
+                                                required
                                                 value={form.resumen}
                                                 onChange={e => setField("resumen", e.target.value)}
                                                 placeholder="Participamos del décimoavo encuentro..."
@@ -330,18 +337,21 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
 
                                 <section>
                                     <h3 className="text-foreground font-semibold text-sm mb-4 flex items-center gap-2">
-                                        <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">4</span>
+                                        <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">2</span>
                                         Imágenes
                                         <span className="text-muted-foreground font-normal normal-case tracking-normal">
-                                            (jpeg, png, webp, gif, avif — máx 5 MB)
+                                            (jpeg, png, webp, gif, avif — máx 5 MB · máx {MAX_IMAGES} imágenes)
                                         </span>
                                     </h3>
 
                                     <div
                                         onDrop={handleDrop}
                                         onDragOver={e => e.preventDefault()}
-                                        onClick={() => fileInputRef.current?.click()}
-                                        className="flex flex-col items-center justify-center gap-2 px-4 py-8 rounded-xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 transition-colors cursor-pointer group"
+                                        onClick={() => (!isEdit && images.length >= MAX_IMAGES) ? undefined : fileInputRef.current?.click()}
+                                        className={`flex flex-col items-center justify-center gap-2 px-4 py-8 rounded-xl border-2 border-dashed transition-colors group ${!isEdit && images.length >= MAX_IMAGES
+                                                ? "border-border opacity-50 cursor-not-allowed"
+                                                : "border-border hover:border-accent hover:bg-accent/5 cursor-pointer"
+                                            }`}
                                     >
                                         <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                             <Upload size={18} className="text-muted-foreground group-hover:text-accent transition-colors" />
@@ -418,14 +428,16 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
                                                         </div>
                                                     </div>
                                                 ))}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => fileInputRef.current?.click()}
-                                                    className="flex flex-col items-center justify-center gap-1 h-28 rounded-xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 transition-colors text-muted-foreground hover:text-accent"
-                                                >
-                                                    <ImageIcon size={20} />
-                                                    <span className="text-xs">Añadir más</span>
-                                                </button>
+                                                {(!isEdit && images.length < MAX_IMAGES) || isEdit ? (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => fileInputRef.current?.click()}
+                                                        className="flex flex-col items-center justify-center gap-1 h-28 rounded-xl border-2 border-dashed border-border hover:border-accent hover:bg-accent/5 transition-colors text-muted-foreground hover:text-accent"
+                                                    >
+                                                        <ImageIcon size={20} />
+                                                        <span className="text-xs">Añadir más</span>
+                                                    </button>
+                                                ) : null}
                                             </div>
                                         </div>
                                     )}
@@ -458,7 +470,7 @@ export default function FormModalEvent({ isOpen, eventoId, onClose, onSuccess }:
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
                                         </svg>
                                     )}
-                                    {isSubmitting ? "Guardando..." : isEdit ? "Guardar cambios" : "Guardar evento"}
+                                    {isSubmitting ? "Guardando..." : isEdit ? "Guardar cambios" : "Crear evento"}
                                 </button>
                             </div>
                         </form>

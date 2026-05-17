@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Icon from "../../../shared/Icon";
 import { motion, AnimatePresence } from "framer-motion";
+import ProductModal from "./ProductModal";
+import axiosPublic from "@/src/apis/axiosPublic";
 
-const { ShieldCheck, Layers, BarChart3, ExternalLink } = Icon;
+const { ExternalLink } = Icon;
 
 export interface ModuleSchema {
     name: string,
@@ -58,10 +60,6 @@ export interface ProductDetail {
     imagenes: Imagen[];
 }
 
-
-
-import ProductModal from "./ProductModal";
-import axiosPublic from "@/src/apis/axiosPublic";
 
 function ProductCard({ products, onOpenModal }: { products: Product; onOpenModal: (products: Product) => void }) {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -152,13 +150,13 @@ function ProductCard({ products, onOpenModal }: { products: Product; onOpenModal
     );
 }
 
-export default function CatalogProducts() {
-    const [products, setProducts] = useState<Product[]>([])
+export default function CatalogProducts({ initialProducts, initialError }: { initialProducts: Product[], initialError: boolean }) {
+    const [products, setProducts] = useState<Product[]>(initialProducts)
     const [productDetail, setProductDetail] = useState<ProductDetail | null>(null);
     const [loadingDetail, setLoadingDetail] = useState(false);
-    const [loading, setIsLoading] = useState(true)
+    const [loading, setIsLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [error, setError] = useState<String | null>(null)
+    const [error, setError] = useState<String | null>(initialError ? "No se pudieron cargar los productos. Intente de nuevo" : null)
 
 
     const fetchProducts = async () => {
@@ -176,10 +174,6 @@ export default function CatalogProducts() {
             setIsLoading(false)
         }
     }
-
-    useEffect(() => {
-        fetchProducts()
-    }, [])
 
     const handleOpenModal = async (product: Product) => {
         setIsModalOpen(true);
@@ -207,7 +201,7 @@ export default function CatalogProducts() {
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mb-16 max-w-2xl">
                     <h2 className="text-pretty text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                        Nuestras Productos
+                        Nuestros Productos
                     </h2>
                     <p className="text-pretty mt-4 text-lg text-slate-600">
                         Soluciones tecnológicas especializadas diseñadas para transformar la gestión y operación de tu negocio.
@@ -234,6 +228,16 @@ export default function CatalogProducts() {
                                 </g>
                             </g>
                         </svg>
+                    </div>
+                ) : error ? (
+                    <div className="flex flex-col items-center justify-center py-20 text-center">
+                        <p className="text-red-500 font-semibold mb-4">{error}</p>
+                        <button
+                            onClick={fetchProducts}
+                            className="rounded-lg bg-[#076490] px-5 py-2 text-sm font-semibold text-white hover:bg-[#065a82] transition-colors"
+                        >
+                            Reintentar
+                        </button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { X, Upload, UserCircle } from "lucide-react"
 import axiosPrivate from "@/src/apis/axiosPrivate"
+import Modal from "@/src/app/shared/Modal"
 
 interface Rol {
     rol_id: number
@@ -54,6 +55,7 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [isFetching, setIsFetching] = useState(false)
     const [error, setError] = useState<string | null>(null)
+    const [showSuccess, setShowSuccess] = useState(false)
     const photoInputRef = useRef<HTMLInputElement>(null)
     const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -179,7 +181,7 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
             }
 
             onSuccess?.()
-            onClose()
+            setShowSuccess(true)
         } catch (err) {
             console.error("Error al guardar usuario:", err)
             setError("Ocurrió un error al guardar el usuario. Intenta de nuevo.")
@@ -436,16 +438,22 @@ export default function FormModalUser({ isOpen, userId, onClose, onSuccess }: Fo
                 </div>
             </div>
 
+            <Modal
+                isOpen={showSuccess}
+                onClose={() => {
+                    setShowSuccess(false)
+                    onClose()
+                }}
+                type="success"
+                title={isEdit ? "¡Usuario actualizado!" : "¡Usuario creado!"}
+                message={isEdit ? "Los cambios fueron guardados exitosamente." : "El usuario fue registrado exitosamente."}
+                confirmText="Aceptar"
+                onConfirm={() => {
+                    setShowSuccess(false)
+                    onClose()
+                }}
+            />
         </>
     )
-}
-
-
-interface FormData {
-    nombre_completo: string
-    correo: string
-    telefono: string
-    foto_link: string
-    rol_id: number
 }
 

@@ -39,6 +39,9 @@ const NavBar = () => {
                         <Link href="/products" className="text-black hover:cursor-pointer">
                             Productos
                         </Link>
+                        <Link href="/events" className="text-black hover:cursor-pointer">
+                            Eventos
+                        </Link>
                         <Link href="/aboutus" className="text-black hover:cursor-pointer">
                             Sobre Nosotros
                         </Link>
@@ -90,6 +93,9 @@ const NavBar = () => {
                             </Link>
                             <Link href="/products" className="block py-3 px-4">
                                 Productos
+                            </Link>
+                            <Link href="/events" className="block py-3 px-4" onClick={closeMenu}>
+                                Eventos
                             </Link>
                             <Link href="/aboutus" className="block py-3 px-4">
                                 Sobre Nosotros

@@ -32,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar />
-        {children}
-        <Footer />
+        <div className="overflow-x-hidden">
+          <NavBar />
+          {children}
+          <Footer />
+        </div>
       </body>
     </html>
   );

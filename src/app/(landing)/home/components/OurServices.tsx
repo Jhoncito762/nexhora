@@ -1,51 +1,56 @@
-import React from "react";
+"use client"
 
-interface Services {
-    id: number;
-    title: string;
-    description: string;
-}
+import { useEffect, useState } from "react";
+import axiosPublic from "@/src/apis/axiosPublic";
+import Link from "next/link";
+
+type Servicio = {
+    servicio_id: number;
+    nombre: string;
+    descripcion: string;
+    caracteristicas: string[];
+};
 
 interface Information {
     description: string;
-    services: Services[];
 }
 
 const information: Information = {
     description:
         "Tecnología, consultoría y capacitación en un solo ecosistema de transformación digital",
-    services: [
-        {
-            id: 1,
-            title: "Consultoría Digital",
-            description:
-                "Evaluamos la madurez tecnológica de tu organización con metodologías TRL/TDM. Diseñamos estrategias personalizadas de transformación digital, gobernanza de datos y arquitectura tecnológica. Del análisis a la implementación guiada.",
-        },
-        {
-            id: 2,
-            title: "IoT & Automatización",
-            description:
-                "Implementamos redes de sensores IoT para agricultura, industria y ciudades inteligentes. Automatización de procesos con Industry 4.0. Monitoreo en tiempo real de variables ambientales, productivas y operacionales. Conectividad rural y urbana.",
-        },
-        {
-            id: 3,
-            title: "Desarrolo de Software a medida",
-            description:
-                "Desarrollamos software web, móvil y de escritorio adaptado a tus procesos únicos. Integramos IA predictiva y generativa, analítica avanzada y arquitecturas cloud-native. Desde MVPs hasta sistemas enterprise escalables y seguros.",
-        },
-        {
-            id: 4,
-            title: "Campañas marketing",
-            description:
-                "Diseñamos campañas digitales completas que conectan con tu audiencia. Producción de videos, renders 3D, motion graphics y contenido para redes sociales. Estrategia de marca, SEO y publicidad digital. De la creatividad a la conversión.",
-        },
-    ],
+
 };
 
 const OurServices = () => {
+
+    const [services, setServices] = useState<Servicio[]>([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState<String | null>(null)
+
+    const fetchServices = async () => {
+        setIsLoading(true)
+        setError(null)
+        try {
+            const response = await axiosPublic.get<{ services: Servicio[] }>(
+                process.env.NEXT_PUBLIC_PUBLIC_SERVICES!
+            )
+
+            const { services } = response.data;
+
+            setServices(services)
+        } catch (error) {
+            setError("No se pudieron cargar los productos. Intente de nuevo")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchServices()
+    }, [])
     return (
         <section className="w-full my-15">
-            <div className="mx-auto max-w-6xl px-4">
+            <div className="mx-auto max-w-6xl px-4 flex flex-col items-center">
                 <div className="flex flex-col items-center text-center">
                     <p className="bg-white px-3 py-2 border border-gray-300 rounded-lg mb-5 text-sm font-semibold w-fit">
                         Todo lo que necesitas
@@ -67,9 +72,9 @@ const OurServices = () => {
                         md:grid md:overflow-visible md:mx-0 md:px-0
                         md:grid-cols-2 lg:grid-cols-4
                 ">
-                        {information.services.map((service) => (
+                        {services.slice(0, 4).map((service) => (
                             <article
-                                key={service.id}
+                                key={service.servicio_id}
                                 className="
                                     snap-start
                                     min-w-70 md:min-w-0
@@ -78,14 +83,17 @@ const OurServices = () => {
                                     transition duration-300 hover:scale-[1.02]
                                     "
                             >
-                                <h2 className="text-xl font-bold text-center">{service.title}</h2>
+                                <h2 className="text-xl font-bold text-center">{service.nombre}</h2>
                                 <p className="text-sm leading-6 text-gray-700 text-center">
-                                    {service.description}
+                                    {service.descripcion}
                                 </p>
                             </article>
                         ))}
                     </div>
                 </div>
+                <Link href="/services" className="text-white bg-black px-5 py-2 rounded-lg hover:cursor-pointer">
+                    Ver todos
+                </Link>
             </div>
         </section>
     );
