@@ -106,6 +106,7 @@ export default function page() {
                     src="/login-ilustration.jpg"
                     alt=""
                     fill
+                    sizes="52vw"
                     className="object-cover"
                     priority
                     aria-hidden="true"
@@ -198,13 +199,14 @@ export default function page() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="tu@nexhora.com"
                                         className={inputClass}
+                                        suppressHydrationWarning
                                     />
                                 </div>
 
                                 {error && <p className="text-destructive text-center text-xs">{error}</p>}
 
                                 <div className="pt-1" />
-                                <button type="submit" disabled={loading} className={btnPrimary}>
+                                <button type="submit" disabled={loading} className={btnPrimary} suppressHydrationWarning>
                                     {loading
                                         ? <><Loader2Icon size={16} className="animate-spin" /> Enviando...</>
                                         : <>Enviar código <ArrowRightIcon size={15} strokeWidth={2.5} /></>
@@ -244,6 +246,7 @@ export default function page() {
                                         onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                                         placeholder="000000"
                                         className={[inputClass, "text-center tracking-[0.5em] text-xl font-bold"].join(" ")}
+                                        suppressHydrationWarning
                                     />
                                     <p className="text-muted-foreground text-xs text-center">
                                         ¿No lo recibiste?{" "}
@@ -260,7 +263,7 @@ export default function page() {
                                 {error && <p className="text-destructive text-xs">{error}</p>}
 
                                 <div className="pt-1" />
-                                <button type="submit" disabled={loading} className={btnPrimary}>
+                                <button type="submit" disabled={loading} className={btnPrimary} suppressHydrationWarning>
                                     {loading
                                         ? <><Loader2Icon size={16} className="animate-spin" /> Verificando...</>
                                         : <>Verificar código <ArrowRightIcon size={15} strokeWidth={2.5} /></>
@@ -304,6 +307,7 @@ export default function page() {
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Mínimo 8 caracteres"
                                             className={[inputClass, "pr-11"].join(" ")}
+                                            suppressHydrationWarning
                                         />
                                         <button
                                             type="button"
@@ -338,6 +342,7 @@ export default function page() {
                                                     ? "border-destructive focus:ring-destructive/20"
                                                     : "",
                                             ].join(" ")}
+                                            suppressHydrationWarning
                                         />
                                         <button
                                             type="button"
@@ -383,7 +388,7 @@ export default function page() {
                                 {error && <p className="text-destructive text-xs">{error}</p>}
 
                                 <div className="pt-1" />
-                                <button type="submit" disabled={loading} className={btnPrimary}>
+                                <button type="submit" disabled={loading} className={btnPrimary} suppressHydrationWarning>
                                     {loading
                                         ? <><Loader2Icon size={16} className="animate-spin" /> Guardando...</>
                                         : <>Guardar contraseña <ArrowRightIcon size={15} strokeWidth={2.5} /></>

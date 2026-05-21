@@ -44,6 +44,7 @@ export default function Page() {
             setServices(services)
         } catch (error) {
             setError("No se pudieron cargar los productos. Intente de nuevo")
+            console.log(error)
         } finally {
             setIsLoading(false)
         }
@@ -148,34 +149,24 @@ export default function Page() {
                 <div className="mx-auto max-w-6xl px-5 sm:px-8">
                     {isLoading ? (
                         <div className="flex justify-center items-center py-20">
-                            <svg viewBox="0 0 57 60" xmlns="http://www.w3.org/2000/svg" stroke="#076490" width={57} height={60}>
-                                <g fill="none" fillRule="evenodd">
-                                    <g transform="translate(1 1)" strokeWidth="3">
-                                        <circle cx="5" cy="50" r="5">
-                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="50;5;50;50" calcMode="linear" repeatCount="indefinite" />
-                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="5;27;49;5" calcMode="linear" repeatCount="indefinite" />
-                                        </circle>
-                                        <circle cx="27" cy="5" r="5">
-                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="5;50;50;5" calcMode="linear" repeatCount="indefinite" />
-                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="27;49;5;27" calcMode="linear" repeatCount="indefinite" />
-                                        </circle>
-                                        <circle cx="49" cy="50" r="5">
-                                            <animate attributeName="cy" begin="0s" dur="2.2s" values="50;50;5;50" calcMode="linear" repeatCount="indefinite" />
-                                            <animate attributeName="cx" begin="0s" dur="2.2s" values="49;5;27;49" calcMode="linear" repeatCount="indefinite" />
-                                        </circle>
-                                    </g>
-                                </g>
-                            </svg>
+                            <Icon.Loader2Icon size={48} className="animate-spin text-[#076490]" />
                         </div>
                     ) : error ? (
-                        <div className="flex flex-col items-center justify-center py-20 text-center">
-                            <p className="text-red-500 font-semibold mb-4">{error}</p>
+                        <div className="flex flex-col items-center justify-center py-20 text-center gap-3">
+                            <Icon.AlertCircle size={40} className="text-red-500" />
+                            <p className="text-red-500 font-semibold">{error}</p>
                             <button
                                 onClick={fetchServices}
                                 className="rounded-lg bg-[#076490] px-5 py-2 text-sm font-semibold text-white hover:bg-[#065a82] transition-colors"
                             >
                                 Reintentar
                             </button>
+                        </div>
+                    ) : services.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20 text-center gap-3">
+                            <Icon.Briefcase size={48} className="text-gray-400" />
+                            <p className="text-gray-500 font-medium text-base">No hay servicios disponibles en el momento</p>
+                            <p className="text-gray-400 text-sm">Vuelve a intentarlo más tarde</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">

@@ -60,6 +60,7 @@ export default function LoginPage() {
                     src="/login-ilustration.jpg"
                     alt=""
                     fill
+                    sizes="52vw"
                     className="object-cover"
                     priority
                     aria-hidden="true"
@@ -144,6 +145,7 @@ export default function LoginPage() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 className="w-full h-12 px-4 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
+                                suppressHydrationWarning
                             />
                         </div>
 
@@ -170,12 +172,14 @@ export default function LoginPage() {
                                     value={formData.password}
                                     onChange={handleChange}
                                     className="w-full h-12 px-4 pr-12 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-sm outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
+                                    suppressHydrationWarning
                                 />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
                                     aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                                    suppressHydrationWarning
                                 >
                                     {showPassword ? (
                                         <EyeClosed size={20} />
@@ -194,6 +198,7 @@ export default function LoginPage() {
                                 checked={formData.remember_me}
                                 onChange={handleChange}
                                 className="w-4 h-4 rounded border-border accent-primary cursor-pointer"
+                                suppressHydrationWarning
                             />
                             <label htmlFor="remember_me" className="text-muted-foreground text-sm cursor-pointer select-none">
                                 Recuérdame
@@ -210,6 +215,7 @@ export default function LoginPage() {
                             type="submit"
                             disabled={isLoading}
                             className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 active:scale-[0.98] hover:cursor-pointer transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            suppressHydrationWarning
                         >
                             {isLoading ? (
                                 <>

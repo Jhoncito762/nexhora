@@ -42,7 +42,9 @@ import {
     EyeOff,
     ArrowRightIcon,
     ArrowLeftIcon,
-    Loader2Icon
+    Loader2Icon,
+    AlertCircle,
+    Briefcase,
 } from 'lucide-react'
 import { RiGlobalFill, RiInstagramFill } from "react-icons/ri";
 import { IoLogoWhatsapp } from 'react-icons/io'
@@ -114,6 +116,9 @@ const Icon = {
     ArrowRightIcon,
     ArrowLeftIcon,
     Loader2Icon,
+    AlertCircle,
+    Briefcase,
+    UsersRound,
 }
 
 export default Icon
