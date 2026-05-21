@@ -168,7 +168,6 @@ export default function ServicesPage() {
                         columns={columns}
                         data={servicios}
                         getRowId={(row) => row.servicio_id}
-                        singleSelect
                         actions={actions}
                         searchPlaceholder="Buscar servicio..."
                         pagination={{

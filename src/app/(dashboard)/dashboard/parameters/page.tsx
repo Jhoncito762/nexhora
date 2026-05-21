@@ -173,7 +173,6 @@ export default function page() {
                         columns={columns}
                         data={productos}
                         getRowId={(row) => row.parametro_id}
-                        singleSelect
                         actions={actions}
                         searchPlaceholder="Buscar producto..."
                         pagination={{

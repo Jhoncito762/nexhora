@@ -182,7 +182,6 @@ export default function page() {
                         columns={columns}
                         data={eventos}
                         getRowId={(row) => row.evento_id}
-                        singleSelect
                         actions={actions}
                         searchPlaceholder="Buscar evento..."
                         pagination={{

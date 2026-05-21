@@ -197,7 +197,6 @@ export default function ProductsPage() {
                         columns={columns}
                         data={productos}
                         getRowId={(row) => row.producto_id}
-                        singleSelect
                         actions={actions}
                         searchPlaceholder="Buscar producto..."
                         pagination={{

@@ -112,7 +112,6 @@ export default function RolesPage() {
                         columns={columns}
                         data={roles}
                         getRowId={(row) => row.rol_id}
-                        singleSelect
                         actions={actions}
                         searchPlaceholder="Buscar rol..."
                     />
