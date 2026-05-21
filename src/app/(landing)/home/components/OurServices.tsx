@@ -89,34 +89,41 @@ const OurServices = () => {
                             <p className="text-gray-400 text-sm">Vuelve a intentarlo más tarde</p>
                         </div>
                     ) : (
-                        <div className="
-                            flex gap-6 overflow-x-auto pb-4 -mx-4 px-4
-                            snap-x snap-mandatory scroll-smooth
-                            md:grid md:overflow-visible md:mx-0 md:px-0
-                            md:grid-cols-2 lg:grid-cols-4
-                        ">
-                            {services.slice(0, 4).map((service) => (
-                                <article
-                                    key={service.servicio_id}
-                                    className="
-                                        snap-start
-                                        min-w-70 md:min-w-0
-                                        bg-white p-7 border border-gray-200 rounded-2xl shadow-md
-                                        flex flex-col gap-3
-                                        transition duration-300 hover:scale-[1.02]
-                                        "
-                                >
-                                    <h2 className="text-xl font-bold text-center">{service.nombre}</h2>
-                                    <p className="text-sm leading-6 text-gray-700 text-center">
-                                        {service.descripcion}
-                                    </p>
-                                </article>
-                            ))}
+                        <div className="flex flex-col gap-5 items-center">
 
-                            <Link href="/services" className="text-white bg-black px-5 py-2 rounded-lg hover:cursor-pointer">
-                                Ver todos
-                            </Link>
+                            <div className="
+                                flex gap-6 overflow-x-auto pb-4 -mx-4 px-4
+                                snap-x snap-mandatory scroll-smooth
+                                md:grid md:overflow-visible md:mx-0 md:px-0
+                                md:grid-cols-2 lg:grid-cols-4
+                                w-full
+                            ">
+                                {services.slice(0, 4).map((service) => (
+                                    <article
+                                        key={service.servicio_id}
+                                        className="
+                                            snap-start
+                                            min-w-70 md:min-w-0
+                                            bg-white p-7 border border-gray-200 rounded-2xl shadow-md
+                                            flex flex-col gap-3
+                                            transition duration-300 hover:scale-[1.02]
+                                            "
+                                    >
+                                        <h2 className="text-xl font-bold text-center">{service.nombre}</h2>
+                                        <p className="text-sm leading-6 text-gray-700 text-center">
+                                            {service.descripcion}
+                                        </p>
+                                    </article>
+                                ))}
+                            </div>
+
+                            {services.length > 0 && (
+                                <Link href="/services" className="text-white bg-black px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors w-fit">
+                                    Ver todos
+                                </Link>
+                            )}
                         </div>
+
                     )}
                 </div>
 
