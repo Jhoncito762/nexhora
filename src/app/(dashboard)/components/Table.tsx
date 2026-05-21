@@ -1,6 +1,6 @@
-"use client"
+﻿"use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import Icon from "../../shared/Icon"
 import { Paginator, PaginatorProps } from "./Paginator"
 
@@ -31,7 +31,6 @@ interface TableProps<T> {
     columns: Column<T>[]
     data: T[]
     getRowId: (row: T) => string | number
-    singleSelect?: boolean
     tabs?: TableTab[]
     activeTab?: string
     onTabChange?: (value: string) => void
@@ -41,40 +40,10 @@ interface TableProps<T> {
     pagination?: PaginatorProps
 }
 
-function SelectAllCheckbox({
-    checked,
-    indeterminate,
-    onChange,
-}: {
-    checked: boolean
-    indeterminate: boolean
-    onChange: () => void
-}) {
-    const ref = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.indeterminate = indeterminate
-        }
-    }, [indeterminate])
-
-    return (
-        <input
-            ref={ref}
-            type="checkbox"
-            checked={checked}
-            onChange={onChange}
-            aria-label="Seleccionar todos"
-            className="w-4 h-4 rounded border-border accent-primary cursor-pointer"
-        />
-    )
-}
-
 export function Table<T,>({
     columns,
     data,
     getRowId,
-    singleSelect = false,
     tabs,
     activeTab,
     onTabChange,
@@ -86,25 +55,8 @@ export function Table<T,>({
     const [selectedIds, setSelectedIds] = useState<Set<string | number>>(new Set())
     const [search, setSearch] = useState("")
 
-    const allIds = data.map(getRowId)
-    const allSelected = !singleSelect && allIds.length > 0 && allIds.every(id => selectedIds.has(id))
-    const someSelected = !singleSelect && allIds.some(id => selectedIds.has(id)) && !allSelected
-
-    const toggleAll = () => {
-        if (singleSelect) return
-        setSelectedIds(allSelected ? new Set() : new Set(allIds))
-    }
-
     const toggleRow = (id: string | number) => {
-        if (singleSelect) {
-            setSelectedIds(prev => prev.has(id) ? new Set() : new Set([id]))
-            return
-        }
-        setSelectedIds(prev => {
-            const next = new Set(prev)
-            next.has(id) ? next.delete(id) : next.add(id)
-            return next
-        })
+        setSelectedIds(prev => prev.has(id) ? new Set() : new Set([id]))
     }
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,11 +102,11 @@ export function Table<T,>({
 
             {/* Selection action bar */}
             {selectedIds.size > 0 && (
-                <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-secondary border-b border-border">
+                <div className="flex flex-col gap-2 px-4 py-3 bg-secondary border-b border-border sm:flex-row sm:items-center sm:justify-between sm:gap-3">
                     <span className="text-foreground font-medium text-sm">
-                        {selectedIds.size} {selectedIds.size === 1 ? "elemento seleccionado" : "elementos seleccionados"}
+                        1 elemento seleccionado
                     </span>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <button
                             onClick={clearSelection}
                             className="h-8 px-3 rounded-lg bg-card border border-border text-muted-foreground hover:text-foreground text-xs font-medium transition-colors cursor-pointer"
@@ -183,15 +135,7 @@ export function Table<T,>({
                 <table className="w-full text-sm">
                     <thead>
                         <tr className="bg-primary border-b border-primary/20">
-                            <th className="w-10 px-4 py-3 text-center">
-                                {!singleSelect && (
-                                    <SelectAllCheckbox
-                                        checked={allSelected}
-                                        indeterminate={someSelected}
-                                        onChange={toggleAll}
-                                    />
-                                )}
-                            </th>
+                            <th className="w-10 px-4 py-3" />
                             {columns.map(col => (
                                 <th
                                     key={col.key}
@@ -223,11 +167,11 @@ export function Table<T,>({
                                     >
                                         <td className="w-10 px-4 py-3">
                                             <input
-                                                type="checkbox"
+                                                type="radio"
                                                 checked={isSelected}
                                                 onChange={() => toggleRow(id)}
                                                 aria-label={`Seleccionar fila ${id}`}
-                                                className="w-4 h-4 rounded border-border accent-primary cursor-pointer"
+                                                className="w-4 h-4 accent-primary cursor-pointer"
                                             />
                                         </td>
                                         {columns.map(col => (
@@ -250,3 +194,4 @@ export function Table<T,>({
         </div>
     )
 }
+
