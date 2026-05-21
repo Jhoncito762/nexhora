@@ -10,18 +10,19 @@ import ProfileModal from "../profile/ProfileModal"
 
 interface DashboardShellProps {
     children: React.ReactNode
-    today: string
 }
 
 const { Search } = Icon;
 
-export function DashboardShell({ children, today }: DashboardShellProps) {
+export function DashboardShell({ children }: DashboardShellProps) {
     const [mobileOpen, setMobileOpen] = useState(false)
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [profileOpen, setProfileOpen] = useState(false)
+    const [today, setToday] = useState("")
     const dropdownRef = useRef<HTMLDivElement>(null)
     const initAuth = useAuthStore((state) => state.initAuth)
     const logout = useAuthStore((state) => state.logout)
+    const logoutAsync = useAuthStore((state) => state.logoutAsync)
     const { decodedToken, profileData } = useAuthStore();
     const displayName = profileData?.nombre ?? decodedToken?.nombre
     const displayEmail = profileData?.correo ?? decodedToken?.correo
@@ -31,6 +32,15 @@ export function DashboardShell({ children, today }: DashboardShellProps) {
     useEffect(() => {
         initAuth()
     }, [initAuth])
+
+    useEffect(() => {
+        setToday(new Date().toLocaleDateString("es-MX", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }))
+    }, [])
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -44,9 +54,9 @@ export function DashboardShell({ children, today }: DashboardShellProps) {
         return () => document.removeEventListener("mousedown", handler)
     }, [dropdownOpen])
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setDropdownOpen(false)
-        logout()
+        await logoutAsync()
         router.push("/login")
     }
 
@@ -80,7 +90,7 @@ export function DashboardShell({ children, today }: DashboardShellProps) {
                         </button>
                         <div>
                             <h1 className="text-foreground text-lg font-bold">Panel de control</h1>
-                            <p className="text-muted-foreground text-xs capitalize">{today}</p>
+                            <p className="text-muted-foreground text-xs capitalize" suppressHydrationWarning>{today}</p>
                         </div>
                     </div>
 

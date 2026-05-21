@@ -14,19 +14,19 @@ export function ModuleHeader({
     onButtonClick,
 }: ModuleHeaderProps) {
     return (
-        <div className="flex items-start justify-between gap-4">
-            <div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+            <div className="min-w-0">
                 <p className="text-muted-foreground text-xs font-semibold tracking-widest uppercase mb-1">
                     {label}
                 </p>
-                <h1 className="text-foreground text-2xl font-bold leading-tight">{title}</h1>
+                <h1 className="text-foreground text-xl sm:text-2xl font-bold leading-tight">{title}</h1>
                 <p className="text-muted-foreground text-sm mt-1">{description}</p>
             </div>
 
             {buttonLabel && (
                 <button
                     onClick={onButtonClick}
-                    className="shrink-0 flex items-center gap-2 h-11 px-5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 active:scale-[0.98] transition-all cursor-pointer"
+                    className="self-start shrink-0 flex items-center gap-2 h-10 sm:h-11 px-4 sm:px-5 rounded-2xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 active:scale-[0.98] transition-all cursor-pointer"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

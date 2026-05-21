@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import Icon from "@/src/app/shared/Icon"
@@ -79,11 +79,17 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ mobileOpen, onMobileClose }: DashboardSidebarProps) {
     const pathname = usePathname()
+    const router = useRouter()
     const [collapsed, setCollapsed] = useState(false)
-    const { decodedToken, profileData } = useAuthStore()
+    const { decodedToken, profileData, logoutAsync } = useAuthStore()
     const displayName = profileData?.nombre ?? decodedToken?.nombre
     const displayEmail = profileData?.correo ?? decodedToken?.correo
     const displayFoto = profileData?.foto ?? decodedToken?.foto
+
+    const handleLogout = async () => {
+        await logoutAsync()
+        router.push("/login")
+    }
 
     useEffect(() => {
         onMobileClose()
@@ -197,14 +203,14 @@ export function DashboardSidebar({ mobileOpen, onMobileClose }: DashboardSidebar
                                 <p className="text-sidebar-foreground text-xs font-medium truncate">{displayName}</p>
                                 <p className="text-sidebar-foreground/40 text-xs truncate">{displayEmail}</p>
                             </div>
-                            <Link
-                                href="/login"
+                            <button
+                                onClick={handleLogout}
                                 className="text-sidebar-foreground/30 group-hover:text-sidebar-foreground/60 transition-colors"
                                 aria-label="Cerrar sesión"
                                 title="Cerrar sesión"
                             >
                                 <FiLogOut size={18} />
-                            </Link>
+                            </button>
                         </>
                     )}
                 </div>

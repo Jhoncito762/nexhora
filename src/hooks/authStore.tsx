@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { jwtDecode } from "jwt-decode";
+import axiosPublic from "@/src/apis/axiosPublic";
+import axiosPrivate from "../apis/axiosPrivate";
 
 type DecodedToken = {
   usuario_id: number;
@@ -28,6 +30,7 @@ type AuthState = {
   updateToken: (newToken: string) => void;
   setProfileData: (data: Partial<ProfileData>) => void;
   logout: () => void;
+  logoutAsync: () => Promise<void>;
   initAuth: () => void;
 };
 
@@ -71,6 +74,30 @@ export const useAuthStore = create<AuthState>((set) => ({
     })),
 
   logout: () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("fcm_token");
+    set({
+      token: null,
+      refreshToken: null,
+      decodedToken: null,
+      profileData: null,
+      permissions: [],
+    });
+  },
+
+  logoutAsync: async () => {
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (refreshToken) {
+      try {
+        await axiosPrivate.post(
+          process.env.NEXT_PUBLIC_LOGOUT_AUTH!,
+          { refreshToken }
+        );
+      } catch {
+        // Siempre cerrar sesión localmente aunque falle la API
+      }
+    }
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("fcm_token");
